@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\FitsInfo\CalculatedValues\EmpiricCalculations.cs" />
     <Compile Include="Data\FitsInfo\ComponentsInfo.cs" />
     <Compile Include="Data\SpectralComponents\Doublet.cs" />
     <Compile Include="Data\SpectralComponents\Sextet.cs" />
