@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MossbauerLab.UnivemMsAggr.Core.Data.FitsInfo
 {
@@ -14,13 +11,15 @@ namespace MossbauerLab.UnivemMsAggr.Core.Data.FitsInfo
         {
         }
 
-        public ComponentsInfo(Decimal chiSquareValue, Decimal velocityStep, Decimal hyperfimeFieldPerMmS)
+        public ComponentsInfo(Decimal chiSquareValue, Decimal velocityStep, Decimal hyperfimeFieldPerMmS, UInt16 channelsNumber)
         {
+            ChannelsNumber = channelsNumber;
             ChiSquareValue = chiSquareValue;
             VelocityStep = velocityStep;
             HyperfineFieldPerMmS = hyperfimeFieldPerMmS;
         }
 
+        public UInt16 ChannelsNumber { get; set; }
         public Decimal ChiSquareValue { get; set; }
         public Decimal VelocityStep { get; set; }
         public Decimal HyperfineFieldPerMmS { get; set; }

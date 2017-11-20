@@ -8,30 +8,30 @@ namespace MossbauerLab.UnivemMsAggr.Core.Data.SpectralComponents
         {
         }
 
-        public Doublet(Decimal lineWidth, Decimal lineWidthPrecision,
-                      Decimal isomerShift, Decimal isomerShiftPrecision,
-                      Decimal quadrupolSplitting, Decimal quadrupolSplittingPrecision,
-                      Decimal relativeArea, Decimal relativeAreaPrecision)
+        public Doublet(Decimal lineWidth, Decimal lineWidthError,
+                      Decimal isomerShift, Decimal isomerShiftError,
+                      Decimal quadrupolSplitting, Decimal quadrupolSplittingError,
+                      Decimal relativeArea, Decimal relativeAreaError)
         {
             LineWidth = lineWidth;
-            LineWidthPrecision = lineWidthPrecision;
+            LineWidthError = lineWidthError;
             IsomerShift = isomerShift;
-            IsomerShiftPrecision = isomerShiftPrecision;
+            IsomerShiftError = isomerShiftError;
             QuadrupolSplitting = quadrupolSplitting;
-            QuadrupolSplittingPrecision = quadrupolSplittingPrecision;
+            QuadrupolSplittingError = quadrupolSplittingError;
             RelativeArea = relativeArea;
-            RelativeAreaPrecision = relativeAreaPrecision;
+            RelativeAreaError = relativeAreaError;
         }
 
         // Hyperfine parameters
         public Decimal LineWidth { get; set; }
-        public Decimal LineWidthPrecision { get; set; }
+        public Decimal LineWidthError { get; set; }
         public Decimal IsomerShift { get; set; }
-        public Decimal IsomerShiftPrecision { get; set; }
+        public Decimal IsomerShiftError { get; set; }
         public Decimal QuadrupolSplitting { get; set; }
-        public Decimal QuadrupolSplittingPrecision { get; set; }
+        public Decimal QuadrupolSplittingError { get; set; }
         // Area
         public Decimal RelativeArea { get; set; }
-        public Decimal RelativeAreaPrecision { get; set; }
+        public Decimal RelativeAreaError { get; set; }
     }
 }

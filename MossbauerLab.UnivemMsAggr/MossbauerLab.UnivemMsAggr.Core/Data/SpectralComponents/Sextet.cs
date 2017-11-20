@@ -8,35 +8,35 @@ namespace MossbauerLab.UnivemMsAggr.Core.Data.SpectralComponents
         {
         }
 
-        public Sextet(Decimal lineWidth, Decimal lineWidthPrecision,
-                      Decimal isomerShift, Decimal isomerShiftPrecision,
-                      Decimal quadrupolShift, Decimal quadrupolShiftPrecision,
-                      Decimal hyperfineField, Decimal hyperfineFieldPrecision,
-                      Decimal relativeArea, Decimal relativeAreaPrecision)
+        public Sextet(Decimal lineWidth, Decimal lineWidthError,
+                      Decimal isomerShift, Decimal isomerShiftPError,
+                      Decimal quadrupolShift, Decimal quadrupolShiftError,
+                      Decimal hyperfineField, Decimal hyperfineFieldError,
+                      Decimal relativeArea, Decimal relativeAreaError)
         {
             LineWidth = lineWidth;
-            LineWidthPrecision = lineWidthPrecision;
+            LineWidthError = lineWidthError;
             IsomerShift = isomerShift;
-            IsomerShiftPrecision = isomerShiftPrecision;
+            IsomerShiftPError = isomerShiftPError;
             QuadrupolShift = quadrupolShift;
-            QuadrupolShiftPrecision = quadrupolShiftPrecision;
+            QuadrupolShiftError = quadrupolShiftError;
             HyperfineField = hyperfineField;
-            HyperfineFieldPrecision = hyperfineFieldPrecision;
+            HyperfineFieldError = hyperfineFieldError;
             RelativeArea = relativeArea;
-            RelativeAreaPrecision = relativeAreaPrecision;
+            RelativeAreaError = relativeAreaError;
         }
 
         // Hyperfine parameters
         public Decimal LineWidth { get; set; }
-        public Decimal LineWidthPrecision { get; set; }
+        public Decimal LineWidthError { get; set; }
         public Decimal IsomerShift { get; set; }
-        public Decimal IsomerShiftPrecision { get; set; }
+        public Decimal IsomerShiftPError { get; set; }
         public Decimal QuadrupolShift { get; set; }
-        public Decimal QuadrupolShiftPrecision { get; set; }
+        public Decimal QuadrupolShiftError { get; set; }
         public Decimal HyperfineField { get; set; }
-        public Decimal HyperfineFieldPrecision { get; set; }
+        public Decimal HyperfineFieldError { get; set; }
         // Area
         public Decimal RelativeArea { get; set; }
-        public Decimal RelativeAreaPrecision { get; set; }
+        public Decimal RelativeAreaError { get; set; }
     }
 }
