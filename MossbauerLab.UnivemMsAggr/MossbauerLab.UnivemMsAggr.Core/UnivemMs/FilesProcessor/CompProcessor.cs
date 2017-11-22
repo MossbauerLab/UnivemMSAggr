@@ -84,12 +84,11 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
 
         private static Int32 GetNextSextetIndex(IList<String> fileContent, IList<Int32> startPosIndexes, SortOrder order)
         {
-            const Int32 fieldLineOffset = 3;
             Decimal extremalField = order == SortOrder.Asc ? 1000000 : 0;
             Int32 selectedIndex = 0;
             foreach (Int32 index in startPosIndexes)
             {
-                String fieldStr = fileContent[index + fieldLineOffset];
+                String fieldStr = fileContent[index + FieldLineOffset];
                 Tuple<Decimal, Decimal> field = GetValue(fieldStr, HyperfineFieldKey);
                 if ((order == SortOrder.Asc && extremalField > field.Item1 + field.Item2) ||
                     (order == SortOrder.Dsc && extremalField < field.Item1 + field.Item2))
@@ -136,5 +135,15 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
         private const String DoubletKey = "Doublet";
 
         private const String HyperfineFieldKey = "H =";
+        private const String QuadrupolShiftKey = "Qs =";
+        private const String IsomerShiftKey = "Is =";
+        private const String LineWidthKey = "G1 =";
+        private const String RelativeAreaKey = "Отн.площадь,% =";
+
+        private const Int32 RelativeAreaOffset = 1;
+        private const Int32 FieldLineOffset = 3;
+        private const Int32 QuadrupolShiftLineOffset = 3;
+        private const Int32 IsomerShiftLineOffset = 3;
+        private const Int32 LineWidthOffset = 5;
     }
 }
