@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,12 +13,17 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
 {
     public static class CompProcessor
     {
+        /// <summary>
+        ///     These files encoding is CP-1251
+        /// </summary>
+        /// <param name="componentsFile"></param>
+        /// <returns></returns>
         public static SpectrumFit Process(String componentsFile)
         {
             SpectrumFit fit = new SpectrumFit();
             if (!File.Exists(Path.GetFullPath(componentsFile)))
                 return null;
-            IList<String> content = File.ReadAllLines(Path.GetFullPath(componentsFile));
+            IList<String> content = File.ReadAllLines(Path.GetFullPath(componentsFile), Encoding.GetEncoding(CompFilesCodePage));
             if (!content.Any(line => String.Equals(line, ComponentsFileSign)))
                 return null;
             UInt16 cahnnelsNumber = GetValue<UInt16>(content, ChannelsNumberKey, ChannelsNumberPattern);
@@ -46,8 +52,12 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
             index += key.Length;
             String residual = selectedLine.Substring(index).Trim();
             String[] parts = residual.Split(' ');
-            return (T)Convert.ChangeType(parts[0], typeof(T));
+            NumberFormatInfo format = new NumberFormatInfo();
+            format.NumberDecimalSeparator = ".";
+            return (T)Convert.ChangeType(parts[0], typeof(T), format);
         }
+
+        private const String CompFilesCodePage = "Windows-1251";
 
         private const String ComponentsFileSign = "Исп.единицы: Is,G,Qs - мм/с; H - кЭ; A - %; отн.G,A - б/разм.";
         private const String VelocityStepKey = "Цена канала: ";
