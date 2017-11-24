@@ -12,6 +12,8 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.UnivemMs.FileProcessor
     {
         [TestCase(NickelFerriteNaCompFile, 4096, 0.006, 0.2, 1.106, 10)]
         [TestCase(NickelFerriteNbCompFile, 4096, 0.006, 0.2, 1.011, 10)]
+        // todo: umv: add more tests with sextets + doublets 
+        // todo: umv: add more tests with different points number
         public void TestProcessorOnNickelFerrites(String spectrumCompFile, Int32 channelsNumber, Decimal velocityStep, 
                                                   Decimal hyperfineFieldError, Decimal chiValue, Int32 sextetsNumber)
         {
@@ -30,6 +32,8 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.UnivemMs.FileProcessor
             Assert.AreEqual(fit.Sextets[0].HyperfineField, maxField, "Checking that subspectra with the highest field at index 0");
             Assert.AreEqual(fit.Sextets[sextetsNumber - 1].HyperfineField, minField, String.Format("Checking that subspectra with the lowest field at index {0}", sextetsNumber - 1));
         }
+
+        // todo: umv: add processing of fit with only doublets sub spectra
 
         private const String NickelFerriteNaCompFile = @"..\..\CompFilesExamples\Indian.NiFe2.O4-NA-2-4096_comp.10s-2017-3.txt";
         private const String NickelFerriteNbCompFile = @"..\..\CompFilesExamples\Indian.NiFe2.O4-NB-2-4096_comp.10s-2017-3.txt";
