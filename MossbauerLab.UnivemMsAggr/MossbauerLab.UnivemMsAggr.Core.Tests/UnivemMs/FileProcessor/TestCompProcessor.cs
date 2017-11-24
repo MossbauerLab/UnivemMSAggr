@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MossbauerLab.UnivemMsAggr.Core.Data;
-using MossbauerLab.UnivemMsAggr.Core.Data.SpectralComponents;
 using MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor;
 using NUnit.Framework;
 
