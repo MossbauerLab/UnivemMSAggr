@@ -82,11 +82,12 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
                 Tuple<Decimal, Decimal?> quadrupolShift = GetValue(fileContent[index + QuadrupolShiftLineOffset], QuadrupolShiftKey);
                 Tuple<Decimal, Decimal?> isomerShift = GetValue(fileContent[index + IsomerShiftLineOffset], IsomerShiftKey);
                 Tuple<Decimal, Decimal?> lineWidth = GetValue(fileContent[index + LineWidthOffset], LineWidthKey);
+                Tuple<Decimal, Decimal?> area = GetValue(fileContent[index + RelativeAreaOffset], RelativeAreaKey);
                 Sextet sextet = new Sextet(lineWidth.Item1, lineWidth.Item2, 
                                            isomerShift.Item1, isomerShift.Item2,
                                            quadrupolShift.Item1, quadrupolShift.Item2,
                                            hyperfineField.Item1, hyperfineField.Item2,
-                                           0, 0);
+                                           area.Item1, area.Item1 * 0.1m);
                 sextets.Add(sextet);
             }
             return sextets;
@@ -120,17 +121,25 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
             String lineResidual = line.Substring(startIndex);
             Int32 errorStartIndex = lineResidual.IndexOf("(", StringComparison.InvariantCulture);
             Int32 errorEndIndex = lineResidual.IndexOf(")", StringComparison.InvariantCulture);
-            String errorValue = lineResidual.Substring(errorStartIndex + 1, errorEndIndex - errorStartIndex - 1).Trim();
             Decimal? error = null;
             Boolean processErrorValue = true;
-            if (String.Equals(errorValue, LimitErrorKey) || String.Equals(errorValue, FixedErrorKey))
+            String errorValue = String.Empty;
+            if (errorStartIndex == -1 || errorEndIndex == -1)
+                processErrorValue = false;
+            else
             {
-                error = 0;
-                processErrorValue = false;
+                errorValue = lineResidual.Substring(errorStartIndex + 1, errorEndIndex - errorStartIndex - 1).Trim();
+
+                if (String.Equals(errorValue, LimitErrorKey) || String.Equals(errorValue, FixedErrorKey))
+                {
+                    error = 0;
+                    processErrorValue = false;
+                }
+                else if (String.Equals(errorValue, NotDefinedErrorKey))
+                    processErrorValue = false;
             }
-            if (String.Equals(errorValue, NotDefinedErrorKey))
-                processErrorValue = false;
             String[] parts = lineResidual.Trim().Split(' ');
+            parts[0] = parts[0].EndsWith(";") ? parts[0].Substring(0, parts[0].Length - 1) : parts[0];
             NumberFormatInfo format = new NumberFormatInfo();
             format.NumberDecimalSeparator = ".";
             // ReSharper disable PossibleNullReferenceException
