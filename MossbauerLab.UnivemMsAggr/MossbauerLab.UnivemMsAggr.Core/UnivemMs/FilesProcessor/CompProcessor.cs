@@ -24,6 +24,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
         ///     These files encoding is CP-1251
         /// </summary>
         /// <param name="componentsFile"></param>
+        /// <param name="order"></param>
         /// <returns></returns>
         public static SpectrumFit Process(String componentsFile, SortOrder order = SortOrder.Dsc)
         {
@@ -42,6 +43,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
             IList<Int32> sextets = indexes.Where(index => content[index].Contains(SextetKey)).ToList();
             IList<Int32> doublets = indexes.Where(index => content[index].Contains(DoubletKey)).ToList();
             fit.Sextets = GetSextets(content, sextets, order);
+            fit.Doublets = GetDoublets(content, doublets, order);
             return fit;
         }
 
@@ -74,15 +76,13 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
             IList<Sextet> sextets = new List<Sextet>();
             while (startPosIndexes.Count > 0)
             {
-                Int32 index = GetNextSextetIndex(fileContent, startPosIndexes, order);
+                Int32 index = GetNextComponentIndex(fileContent, startPosIndexes, order, true);
                 startPosIndexes.Remove(index);
-                // todo : umv : proccess
-
-                Tuple<Decimal, Decimal?> hyperfineField = GetValue(fileContent[index + HyperfineFieldLineOffset], HyperfineFieldKey);
-                Tuple<Decimal, Decimal?> quadrupolShift = GetValue(fileContent[index + QuadrupolShiftLineOffset], QuadrupolShiftKey);
-                Tuple<Decimal, Decimal?> isomerShift = GetValue(fileContent[index + IsomerShiftLineOffset], IsomerShiftKey);
-                Tuple<Decimal, Decimal?> lineWidth = GetValue(fileContent[index + LineWidthOffset], LineWidthKey);
-                Tuple<Decimal, Decimal?> area = GetValue(fileContent[index + RelativeAreaOffset], RelativeAreaKey);
+                Tuple<Decimal, Decimal?> hyperfineField = GetValue(fileContent[index + HyperfineFieldLineOffsetInSextet], HyperfineFieldKey);
+                Tuple<Decimal, Decimal?> quadrupolShift = GetValue(fileContent[index + QuadrupolShiftLineOffsetInSextet], QuadrupolShiftKey);
+                Tuple<Decimal, Decimal?> isomerShift = GetValue(fileContent[index + IsomerShiftLineOffsetInSextet], IsomerShiftKey);
+                Tuple<Decimal, Decimal?> lineWidth = GetValue(fileContent[index + LineWidthOffsetInSextet], LineWidthKey);
+                Tuple<Decimal, Decimal?> area = GetValue(fileContent[index + RelativeAreaLineOffsetInSextet], RelativeAreaKey, false);
                 Sextet sextet = new Sextet(lineWidth.Item1, lineWidth.Item2, 
                                            isomerShift.Item1, isomerShift.Item2,
                                            quadrupolShift.Item1, quadrupolShift.Item2,
@@ -93,26 +93,46 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
             return sextets;
         }
 
-        private static Int32 GetNextSextetIndex(IList<String> fileContent, IList<Int32> startPosIndexes, SortOrder order)
+        private static IList<Doublet> GetDoublets(IList<String> fileContent, IList<Int32> startPosIndexes, SortOrder order)
         {
-            Decimal extremalField = order == SortOrder.Asc ? 1000000 : 0;
+            IList<Doublet> doublets = new List<Doublet>();
+            while (startPosIndexes.Count > 0)
+            {
+                Int32 index = GetNextComponentIndex(fileContent, startPosIndexes, order, false);
+                startPosIndexes.Remove(index);
+                Tuple<Decimal, Decimal?> quadrupolShift = GetValue(fileContent[index + QuadrupolShiftLineOffsetInDoublet], QuadrupolShiftKey);
+                Tuple<Decimal, Decimal?> isomerShift = GetValue(fileContent[index + IsomerShiftLineOffsetInDoublet], IsomerShiftKey);
+                Tuple<Decimal, Decimal?> lineWidth = GetValue(fileContent[index + LineWidthOffsetInDoublet], LineWidthKey);
+                Tuple<Decimal, Decimal?> area = GetValue(fileContent[index + RelativeAreaLineOffsetInDoublet], RelativeAreaKey, false);
+                Doublet doublet = new Doublet(lineWidth.Item1, lineWidth.Item2,
+                                              isomerShift.Item1, isomerShift.Item2,
+                                              quadrupolShift.Item1, quadrupolShift.Item2,
+                                              area.Item1, area.Item1 * 0.1m);
+                doublets.Add(doublet);
+            }
+            return doublets;
+        }
+
+        private static Int32 GetNextComponentIndex(IList<String> fileContent, IList<Int32> startPosIndexes, SortOrder order, Boolean isSextet)
+        {
+            Decimal  value = order == SortOrder.Asc ? 1000000 : 0;
             Int32 selectedIndex = 0;
             foreach (Int32 index in startPosIndexes)
             {
-                String fieldStr = fileContent[index + HyperfineFieldLineOffset];
-                Tuple<Decimal, Decimal?> field = GetValue(fieldStr, HyperfineFieldKey);
-                Decimal error = field.Item2 ?? 0;
-                if ((order == SortOrder.Asc && extremalField > field.Item1 + error) ||
-                    (order == SortOrder.Dsc && extremalField < field.Item1 + error))
+                String fieldStr = fileContent[index + (isSextet ? HyperfineFieldLineOffsetInSextet : QuadrupolShiftLineOffsetInDoublet)];
+                Tuple<Decimal, Decimal?> parameter = GetValue(fieldStr, isSextet ? HyperfineFieldKey : QuadrupolShiftKey);
+                Decimal error = parameter.Item2 ?? 0;
+                if ((order == SortOrder.Asc && value > parameter.Item1 + error) ||
+                    (order == SortOrder.Dsc && value < parameter.Item1 + error))
                 {
-                    extremalField = field.Item1 + error;
+                     value = parameter.Item1 + error;
                     selectedIndex = index;
                 }
             }
             return selectedIndex;
         }
 
-        private static Tuple<Decimal, Decimal?> GetValue(String line, String key)
+        private static Tuple<Decimal, Decimal?> GetValue(String line, String key, Boolean errorPresent = true)
         {
             Int32 startIndex = line.IndexOf(key, StringComparison.InvariantCulture);
             if (startIndex == -1)
@@ -124,7 +144,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
             Decimal? error = null;
             Boolean processErrorValue = true;
             String errorValue = String.Empty;
-            if (errorStartIndex == -1 || errorEndIndex == -1)
+            if (!errorPresent)
                 processErrorValue = false;
             else
             {
@@ -174,10 +194,15 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
         private const String LineWidthKey = "G1=";
         private const String RelativeAreaKey = "Отн.площадь,% =";
 
-        private const Int32 RelativeAreaOffset = 1;
-        private const Int32 HyperfineFieldLineOffset = 3;
-        private const Int32 QuadrupolShiftLineOffset = 3;
-        private const Int32 IsomerShiftLineOffset = 3;
-        private const Int32 LineWidthOffset = 5;
+        private const Int32 RelativeAreaLineOffsetInSextet = 1;
+        private const Int32 HyperfineFieldLineOffsetInSextet = 3;
+        private const Int32 QuadrupolShiftLineOffsetInSextet = 3;
+        private const Int32 IsomerShiftLineOffsetInSextet = 3;
+        private const Int32 LineWidthOffsetInSextet = 5;
+
+        private const Int32 RelativeAreaLineOffsetInDoublet = 1;
+        private const Int32 QuadrupolShiftLineOffsetInDoublet = 2;
+        private const Int32 IsomerShiftLineOffsetInDoublet = 2;
+        private const Int32 LineWidthOffsetInDoublet = 4;
     }
 }

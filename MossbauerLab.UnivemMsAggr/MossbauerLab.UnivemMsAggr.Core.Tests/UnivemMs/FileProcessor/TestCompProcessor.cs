@@ -10,12 +10,11 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.UnivemMs.FileProcessor
     [TestFixture]
     public class TestCompProcessor
     {
-        [TestCase(NickelFerriteNaCompFile, 4096, 0.006, 0.2, 1.106, 10)]
-        [TestCase(NickelFerriteNbCompFile, 4096, 0.006, 0.2, 1.011, 10)]
-        // todo: umv: add more tests with sextets + doublets 
-        // todo: umv: add more tests with different points number
+        [TestCase(NickelFerriteNaCompFile, 4096, 0.006, 0.2, 1.106, 10, 0)]
+        [TestCase(NickelFerriteNbCompFile, 4096, 0.006, 0.2, 1.011, 10, 0)]
+        [TestCase(Bioffer2CompFile, 1024, 0.021, 0.7, 1.069, 7, 1)]
         public void TestProcessorOnNickelFerrites(String spectrumCompFile, Int32 channelsNumber, Decimal velocityStep, 
-                                                  Decimal hyperfineFieldError, Decimal chiValue, Int32 sextetsNumber)
+                                                  Decimal hyperfineFieldError, Decimal chiValue, Int32 sextetsNumber, Int32 doubletsNumber)
         {
             SpectrumFit fit = CompProcessor.Process(spectrumCompFile);
             Assert.IsNotNull(fit, "Checking that spectrum fit is not a null");
@@ -31,11 +30,14 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.UnivemMs.FileProcessor
             Decimal minField = fit.Sextets.Min(item => item.HyperfineField);
             Assert.AreEqual(fit.Sextets[0].HyperfineField, maxField, "Checking that subspectra with the highest field at index 0");
             Assert.AreEqual(fit.Sextets[sextetsNumber - 1].HyperfineField, minField, String.Format("Checking that subspectra with the lowest field at index {0}", sextetsNumber - 1));
+
+            Assert.AreEqual(doubletsNumber, fit.Doublets.Count, "Checking that sextets number is equal to expected");
         }
 
         // todo: umv: add processing of fit with only doublets sub spectra
 
         private const String NickelFerriteNaCompFile = @"..\..\CompFilesExamples\Indian.NiFe2.O4-NA-2-4096_comp.10s-2017-3.txt";
         private const String NickelFerriteNbCompFile = @"..\..\CompFilesExamples\Indian.NiFe2.O4-NB-2-4096_comp.10s-2017-3.txt";
+        private const String Bioffer2CompFile = @"..\..\CompFilesExamples\BIOFER2-1024_comp_7s1d.txt";
     }
 }
