@@ -104,7 +104,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             return String.Empty;
         }
 
-        private const String TableHeaderEn = "Sample\t\tΓ, mm/s\tδ, mm/s\t\t2έ mm/s\t\tHeff kOe\tA, %\t\tχ2\tComponent";
+        private const String TableHeaderEn = "Sample\t\tΓ, mm/s\tδ, mm/s\t\t2έ, mm/s\tHeff, kOe\tA, %\t\tχ2\tComponent";
 
         private readonly NumberFormatInfo _parametersFormatInfo = new NumberFormatInfo();
         private readonly NumberFormatInfo _hypFieldFormatInfo = new NumberFormatInfo();
