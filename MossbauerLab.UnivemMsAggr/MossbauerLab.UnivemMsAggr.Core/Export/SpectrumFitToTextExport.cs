@@ -33,7 +33,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             }
             // todo: umv: think about should we delete or not if file already exists
             List<String> content = new List<String>();
-            content.Add(TableHeaderEn);
+            content.Add(data.Any(fit => fit != null && fit.Sextets.Count > 0) ? TableHeaderMixCompEn : TableHeaderDoubletsOnlyEn);
             try
             {
                 foreach (SpectrumFit fit in data)
@@ -55,7 +55,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             }
             // todo: umv: think about should we delete or not if file already exists
             List<String> content = new List<String>();
-            content.Add(TableHeaderEn);
+            content.Add(data!= null && data.Sextets.Count > 0 ? TableHeaderMixCompEn : TableHeaderDoubletsOnlyEn);
             try
             {
                 content.AddRange(GetExportingLines(data));
@@ -113,7 +113,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             return builder.ToString();
         }
 
-        private String ConvertDoublet(String sample, Doublet doublet, Decimal velocityStep, Decimal? chiSquare, Int32 doubletNumber)
+        private String ConvertDoublet(String sample, Doublet doublet, Decimal velocityStep, Decimal? chiSquare, Int32 doubletNumber, Boolean doubletsOnly = false)
         {
             StringBuilder builder = new StringBuilder();
             if (!String.IsNullOrWhiteSpace(sample))
@@ -123,13 +123,15 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             AppendData(builder, doublet.LineWidth, doublet.LineWidthError, velocityStep * 2, 3, _parametersFormatInfo);
             AppendData(builder, doublet.IsomerShift, doublet.IsomerShiftError, velocityStep, 3, _parametersFormatInfo);
             AppendData(builder, doublet.QuadrupolSplitting, doublet.QuadrupolSplittingError, velocityStep, 3, _parametersFormatInfo);
+            if(!doubletsOnly)
+                builder.Append("\t\t");
             AppendData(builder, doublet.RelativeArea, doublet.RelativeAreaError, 0, 2, _hypFieldFormatInfo);
 
             if (chiSquare != null)
                 builder.Append(chiSquare);
             builder.Append("\t");
 
-            builder.Append("S" + doubletNumber);
+            builder.Append("D" + doubletNumber);
 
             return builder.ToString();
         }
@@ -147,7 +149,8 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             builder.Append(spacing);
         }
 
-        private const String TableHeaderEn = "Sample\t\tΓ, mm/s\tδ, mm/s\t\t2έ, mm/s\tHeff, kOe\tA, %\t\tχ2\tComponent";
+        private const String TableHeaderMixCompEn = "Sample\t\tΓ, mm/s\t\tδ, mm/s\t\t2έ, mm/s\tHeff, kOe\tA, %\t\tχ2\tComponent";
+        private const String TableHeaderDoubletsOnlyEn = "Sample\t\tΓ, mm/s\t\tδ, mm/s\t\t2έ, mm/s\tA, %\t\tχ2\tComponent";
 
         private readonly NumberFormatInfo _parametersFormatInfo = new NumberFormatInfo();
         private readonly NumberFormatInfo _hypFieldFormatInfo = new NumberFormatInfo();
