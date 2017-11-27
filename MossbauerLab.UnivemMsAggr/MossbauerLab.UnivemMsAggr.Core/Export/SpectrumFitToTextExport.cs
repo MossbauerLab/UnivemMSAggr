@@ -48,47 +48,11 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 builder.Append(sample);
             else builder.Append("\t\t");
 
-            builder.AppendFormat(Decimal.Round(sextet.LineWidth, 3).ToString(_parametersFormatInfo));
-            if (sextet.LineWidthError != null)
-            {
-                builder.Append("±");
-                Decimal errorValue = sextet.LineWidthError > velocityStep * 2 ? sextet.LineWidthError.Value : velocityStep * 2;
-                builder.Append(Decimal.Round(errorValue).ToString(_parametersFormatInfo));
-            }
-            builder.Append("\t");
-
-            builder.Append(Decimal.Round(sextet.IsomerShift, 3).ToString(_parametersFormatInfo));
-            if (sextet.IsomerShiftPError != null)
-            {
-                builder.Append("±");
-                Decimal errorValue = sextet.IsomerShiftPError > velocityStep ? sextet.IsomerShiftPError.Value : velocityStep;
-                builder.Append(Decimal.Round(errorValue, 3).ToString(_parametersFormatInfo));
-            }
-            builder.Append("\t");
-
-            builder.Append(Decimal.Round(sextet.QuadrupolShift, 3).ToString(_parametersFormatInfo));
-            if (sextet.QuadrupolShiftError != null)
-            {
-                builder.Append("±");
-                Decimal errorValue = sextet.QuadrupolShiftError > velocityStep ? sextet.QuadrupolShiftError.Value : velocityStep;
-                builder.Append(Decimal.Round(errorValue, 3).ToString(_parametersFormatInfo));
-            }
-            builder.Append("\t");
-
-            builder.Append(Decimal.Round(sextet.HyperfineField, 1).ToString(_hypFieldFormatInfo));
-            if (sextet.HyperfineFieldError != null)
-            {
-                builder.Append("±");
-                Decimal errorValue = sextet.HyperfineFieldError > hyperfineFieldError ? sextet.HyperfineFieldError.Value : hyperfineFieldError;
-                builder.Append(Decimal.Round(errorValue, 1).ToString(_hypFieldFormatInfo));
-            }
-            builder.Append("\t");
-
-            builder.Append(Decimal.Round(sextet.RelativeArea, 2).ToString(_areaFormatInfo));
-            builder.Append("±");
-            // ReSharper disable once PossibleInvalidOperationException
-            builder.Append(Decimal.Round(sextet.RelativeAreaError.Value, 2).ToString(_areaFormatInfo));
-            builder.Append("\t");
+            AppendData(builder, sextet.LineWidth, sextet.LineWidthError, velocityStep * 2, 3, _parametersFormatInfo);
+            AppendData(builder, sextet.IsomerShift, sextet.IsomerShiftError, velocityStep, 3, _parametersFormatInfo);
+            AppendData(builder, sextet.QuadrupolShift, sextet.QuadrupolShiftError, velocityStep, 3, _parametersFormatInfo);
+            AppendData(builder, sextet.HyperfineField, sextet.HyperfineFieldError, hyperfineFieldError, 1, _hypFieldFormatInfo);
+            AppendData(builder, sextet.RelativeArea, sextet.RelativeAreaError, 0, 2, _hypFieldFormatInfo);
 
             if (chiSquare != null)
                 builder.Append(chiSquare);
@@ -102,6 +66,19 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
         private String GetDoubletString(Doublet doublet)
         {
             return String.Empty;
+        }
+
+        private void AppendData(StringBuilder builder, Decimal value, Decimal? error, Decimal comparator, 
+                                Int32 round, NumberFormatInfo format, String spacing = "\t")
+        {
+            builder.Append(Decimal.Round(value, round).ToString(format));
+            if (error != null)
+            {
+                builder.Append("±");
+                Decimal errorValue = error > comparator ? error.Value : comparator;
+                builder.Append(Decimal.Round(errorValue, round).ToString(format));
+            }
+            builder.Append(spacing);
         }
 
         private const String TableHeaderEn = "Sample\t\tΓ, mm/s\tδ, mm/s\t\t2έ, mm/s\tHeff, kOe\tA, %\t\tχ2\tComponent";
