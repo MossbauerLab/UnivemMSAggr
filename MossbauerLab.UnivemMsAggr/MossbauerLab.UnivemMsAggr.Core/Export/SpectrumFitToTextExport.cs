@@ -8,6 +8,9 @@ using MossbauerLab.UnivemMsAggr.Core.Data.SpectralComponents;
 
 namespace MossbauerLab.UnivemMsAggr.Core.Export
 {
+    /// <summary>
+    ///  This export implementation is not primary for us
+    /// </summary>
     public class SpectrumFitToTextExport : ISpectrumFitExport
     {
         public SpectrumFitToTextExport()
@@ -29,19 +32,29 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             // todo: umv: think about should we delete or not if file already exists
             IList<String> dataRepresentation = new List<String>();
             dataRepresentation.Add(TableHeaderEn);
+            // todo: umv: pass sample name
             if (data.Sextets != null)
             {
                 for (Int32 i = 0; i < data.Sextets.Count; i++)
                 {
-                    dataRepresentation.Add(i == 0 ? GetSextetString(null, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, data.Info.ChiSquareValue, i)
-                                                  : GetSextetString(null, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, null, i));
+                    dataRepresentation.Add(i == 0 ? ConvertSextet(null, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, data.Info.ChiSquareValue, i)
+                                                  : ConvertSextet(null, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, null, i));
+                }
+            }
+            if (data.Doublets != null)
+            {
+                for (Int32 i = 0; i < data.Doublets.Count; i++)
+                {
+                    dataRepresentation.Add(i == 0 && (data.Sextets == null || data.Sextets.Count == 0)
+                                             ? ConvertDoublet(null, data.Doublets[i], data.Info.VelocityStep, data.Info.ChiSquareValue, i)
+                                             : ConvertDoublet(null, data.Doublets[i], data.Info.VelocityStep, null, i));
                 }
             }
             File.AppendAllLines(destination, dataRepresentation);
             return true;
         }
 
-        private String GetSextetString(String sample, Sextet sextet, Decimal hyperfineFieldError, Decimal velocityStep, Decimal? chiSquare, Int32 sextetNumber)
+        private String ConvertSextet(String sample, Sextet sextet, Decimal hyperfineFieldError, Decimal velocityStep, Decimal? chiSquare, Int32 sextetNumber)
         {
             StringBuilder builder = new StringBuilder();
             if (!String.IsNullOrWhiteSpace(sample))
@@ -63,9 +76,25 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             return builder.ToString();
         }
 
-        private String GetDoubletString(Doublet doublet)
+        private String ConvertDoublet(String sample, Doublet doublet, Decimal velocityStep, Decimal? chiSquare, Int32 doubletNumber)
         {
-            return String.Empty;
+            StringBuilder builder = new StringBuilder();
+            if (!String.IsNullOrWhiteSpace(sample))
+                builder.Append(sample);
+            else builder.Append("\t\t");
+
+            AppendData(builder, doublet.LineWidth, doublet.LineWidthError, velocityStep * 2, 3, _parametersFormatInfo);
+            AppendData(builder, doublet.IsomerShift, doublet.IsomerShiftError, velocityStep, 3, _parametersFormatInfo);
+            AppendData(builder, doublet.QuadrupolSplitting, doublet.QuadrupolSplittingError, velocityStep, 3, _parametersFormatInfo);
+            AppendData(builder, doublet.RelativeArea, doublet.RelativeAreaError, 0, 2, _hypFieldFormatInfo);
+
+            if (chiSquare != null)
+                builder.Append(chiSquare);
+            builder.Append("\t");
+
+            builder.Append("S" + doubletNumber);
+
+            return builder.ToString();
         }
 
         private void AppendData(StringBuilder builder, Decimal value, Decimal? error, Decimal comparator, 
