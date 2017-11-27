@@ -34,6 +34,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor
             IList<String> content = File.ReadAllLines(Path.GetFullPath(componentsFile), Encoding.GetEncoding(CompFilesCodePage));
             if (!content.Any(line => String.Equals(line, ComponentsFileSign)))
                 return null;
+            fit.FileName = componentsFile;
             UInt16 cahnnelsNumber = GetValue<UInt16>(content, ChannelsNumberKey, ChannelsNumberPattern);
             Decimal velocityStep = GetValue<Decimal>(content, VelocityStepKey, VelocityStepLinePattern);
             Decimal chiSquareValue = GetValue<Decimal>(content, ChiSquareKey,ChiSquareLinePattern);
