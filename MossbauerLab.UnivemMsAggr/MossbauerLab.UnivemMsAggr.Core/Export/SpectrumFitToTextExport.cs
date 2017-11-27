@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -81,11 +80,13 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             }
             if (data.Doublets != null)
             {
+                Boolean doubletsOnly = data.Sextets == null || data.Sextets.Count == 0;
                 for (Int32 i = 0; i < data.Doublets.Count; i++)
                 {
-                    lines.Add(i == 0 && (data.Sextets == null || data.Sextets.Count == 0)
-                                  ? ConvertDoublet(data.SampleName, data.Doublets[i], data.Info.VelocityStep, data.Info.ChiSquareValue, i)
-                                  : ConvertDoublet(null, data.Doublets[i], data.Info.VelocityStep, null, i));
+
+                    lines.Add(i == 0 && doubletsOnly
+                                  ? ConvertDoublet(data.SampleName, data.Doublets[i], data.Info.VelocityStep, data.Info.ChiSquareValue, i, doubletsOnly)
+                                  : ConvertDoublet(null, data.Doublets[i], data.Info.VelocityStep, null, i, doubletsOnly));
                 }
             }
             return lines;
@@ -94,9 +95,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
         private String ConvertSextet(String sample, Sextet sextet, Decimal hyperfineFieldError, Decimal velocityStep, Decimal? chiSquare, Int32 sextetNumber)
         {
             StringBuilder builder = new StringBuilder();
-            if (!String.IsNullOrWhiteSpace(sample))
-                builder.Append(sample);
-            else builder.Append("\t\t");
+            builder.Append(!String.IsNullOrWhiteSpace(sample) ? sample : "\t\t");
 
             AppendData(builder, sextet.LineWidth, sextet.LineWidthError, velocityStep * 2, 3, _parametersFormatInfo);
             AppendData(builder, sextet.IsomerShift, sextet.IsomerShiftError, velocityStep, 3, _parametersFormatInfo);
@@ -116,9 +115,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
         private String ConvertDoublet(String sample, Doublet doublet, Decimal velocityStep, Decimal? chiSquare, Int32 doubletNumber, Boolean doubletsOnly = false)
         {
             StringBuilder builder = new StringBuilder();
-            if (!String.IsNullOrWhiteSpace(sample))
-                builder.Append(sample);
-            else builder.Append("\t\t");
+            builder.Append(!String.IsNullOrWhiteSpace(sample) ? sample : "\t\t");
 
             AppendData(builder, doublet.LineWidth, doublet.LineWidthError, velocityStep * 2, 3, _parametersFormatInfo);
             AppendData(builder, doublet.IsomerShift, doublet.IsomerShiftError, velocityStep, 3, _parametersFormatInfo);
