@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using MossbauerLab.UnivemMsAggr.Core.Data;
 using MossbauerLab.UnivemMsAggr.Core.Data.SpectralComponents;
@@ -23,6 +25,28 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             _areaFormatInfo.NumberDecimalDigits = 2;
         }
 
+        public Boolean Export(String destination, IList<SpectrumFit> data)
+        {
+            if (!File.Exists(Path.GetFullPath(destination)))
+            {
+                File.Create(destination).Close();
+            }
+            // todo: umv: think about should we delete or not if file already exists
+            List<String> content = new List<String>();
+            content.Add(TableHeaderEn);
+            try
+            {
+                foreach (SpectrumFit fit in data)
+                    content.AddRange(GetExportingLines(fit));
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            File.AppendAllLines(destination, content);
+            return true;
+        }
+
         public Boolean Export(String destination, SpectrumFit data)
         {
             if (!File.Exists(Path.GetFullPath(destination)))
@@ -30,28 +54,41 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 File.Create(destination).Close();
             }
             // todo: umv: think about should we delete or not if file already exists
-            IList<String> dataRepresentation = new List<String>();
-            dataRepresentation.Add(TableHeaderEn);
-            // todo: umv: pass sample name
+            List<String> content = new List<String>();
+            content.Add(TableHeaderEn);
+            try
+            {
+                content.AddRange(GetExportingLines(data));
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            File.AppendAllLines(destination, content);
+            return true;
+        }
+
+        private IList<String> GetExportingLines(SpectrumFit data)
+        {
+            IList<String> lines = new List<String>();
             if (data.Sextets != null)
             {
                 for (Int32 i = 0; i < data.Sextets.Count; i++)
                 {
-                    dataRepresentation.Add(i == 0 ? ConvertSextet(null, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, data.Info.ChiSquareValue, i)
-                                                  : ConvertSextet(null, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, null, i));
+                    lines.Add(i == 0 ? ConvertSextet(data.SampleName, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, data.Info.ChiSquareValue, i)
+                                     : ConvertSextet(null, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, null, i));
                 }
             }
             if (data.Doublets != null)
             {
                 for (Int32 i = 0; i < data.Doublets.Count; i++)
                 {
-                    dataRepresentation.Add(i == 0 && (data.Sextets == null || data.Sextets.Count == 0)
-                                             ? ConvertDoublet(null, data.Doublets[i], data.Info.VelocityStep, data.Info.ChiSquareValue, i)
-                                             : ConvertDoublet(null, data.Doublets[i], data.Info.VelocityStep, null, i));
+                    lines.Add(i == 0 && (data.Sextets == null || data.Sextets.Count == 0)
+                                  ? ConvertDoublet(data.SampleName, data.Doublets[i], data.Info.VelocityStep, data.Info.ChiSquareValue, i)
+                                  : ConvertDoublet(null, data.Doublets[i], data.Info.VelocityStep, null, i));
                 }
             }
-            File.AppendAllLines(destination, dataRepresentation);
-            return true;
+            return lines;
         }
 
         private String ConvertSextet(String sample, Sextet sextet, Decimal hyperfineFieldError, Decimal velocityStep, Decimal? chiSquare, Int32 sextetNumber)
