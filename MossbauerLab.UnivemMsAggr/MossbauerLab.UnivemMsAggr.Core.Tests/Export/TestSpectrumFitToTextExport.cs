@@ -22,6 +22,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.Export
 
         [TestCase(NickelFerriteNaCompFile)]
         [TestCase(Bioffer2CompFile)]
+        [TestCase(FakeDoubletsCompFile)]
         public void TestExportSingleFit(String spectrumCompFile)
         {
             SpectrumFit fit = CompProcessor.Process(spectrumCompFile);
@@ -32,6 +33,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.Export
 
         private const String NickelFerriteNaCompFile = @"..\..\CompFilesExamples\Indian.NiFe2.O4-NA-2-4096_comp.10s-2017-3.txt";
         private const String Bioffer2CompFile = @"..\..\CompFilesExamples\BIOFER2-1024_comp_7s1d.txt";
+        private const String FakeDoubletsCompFile = @"..\..\CompFilesExamples\Fake_spec_comp.txt";
         private const String OutFile = @"Result.txt";
 
         private readonly ISpectrumFitExport _exportService = new SpectrumFitToTextExport();
