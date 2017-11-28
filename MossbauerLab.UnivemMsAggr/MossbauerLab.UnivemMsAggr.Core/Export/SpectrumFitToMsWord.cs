@@ -28,16 +28,18 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 Int32 rows = (!doubletsOnly) ? data.Sextets.Count + data.Doublets.Count + 1 : data.Doublets.Count + 1;
                 Int32 columns = (!doubletsOnly) ? _tableHeaderMixedCompEn.Count : _tableHeaderDoubletsOnlyEn.Count;
                 Table componentsTable = CreateDocTable(rows, columns);
+                // todo: umv move table hat creation into separate method
+                CreateTableHeader(componentsTable, !doubletsOnly);
                 if (data.Sextets != null && data.Sextets.Count > 0)
                 {
-                    for (Int32 row = 1; row <= data.Sextets.Count + 1; row++)
+                    for (Int32 row = 2; row <= data.Sextets.Count + 1; row++)
                     {
                         for (Int32 column = 1; column <= _tableHeaderMixedCompEn.Count; column++)
                         {
-                            if (row == 1)
-                                componentsTable.Cell(row, column).Range.Text = _tableHeaderMixedCompEn[column - 1];
-                            else
-                            {
+                            //if (row == 1)
+                                //componentsTable.Cell(row, column).Range.Text = _tableHeaderMixedCompEn[column - 1];
+                            //else
+                            //{
                                 if (row == 2 && column == 1)
                                     componentsTable.Cell(row, column).Range.Text = data.SampleName;
                                 else if (row == 2 && column == ChiSquareValueSextetIndex)
@@ -48,21 +50,21 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                                     componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Sextets[row - 2], column,
                                                                                                            data.Info.VelocityStep,
                                                                                                            data.Info.HyperfineFieldPerMmS);
-                            }
+                            //}
                         }
                     }
                 }
                 if (data.Doublets != null)
                 {
-                    Int32 startIndex = doubletsOnly ? 1 : data.Sextets.Count + 2;
+                    Int32 startIndex = doubletsOnly ? 2 : data.Sextets.Count + 2;
                     for (Int32 row = startIndex; row <= rows; row++)
                     {
                         for (Int32 column = 1; column <= columns; column++)
                         {
-                            if (row == 1)
-                                componentsTable.Cell(row, column).Range.Text = _tableHeaderDoubletsOnlyEn[column - 1];
-                            else
-                            {
+                            //if (row == 1)
+                                //componentsTable.Cell(row, column).Range.Text = _tableHeaderDoubletsOnlyEn[column - 1];
+                            //else
+                            //{
                                 if (row == 2 && column == 1)
                                     componentsTable.Cell(row, column).Range.Text = data.SampleName;
                                 else if (row == 2 && column == 6)
@@ -76,7 +78,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                                                                                                            data.Info.VelocityStep,
                                                                                                            data.Info.HyperfineFieldPerMmS,
                                                                                                            !doubletsOnly);
-                            }
+                            //}
                         }
                     }
                 }
@@ -92,6 +94,15 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
         public Boolean Export(String destination, IList<SpectrumFit> data)
         {
             throw new NotImplementedException();
+        }
+
+        private void CreateTableHeader(Table table, Boolean mixedComponents)
+        {
+            IList<String> selectedHeader = mixedComponents ? _tableHeaderMixedCompEn : _tableHeaderDoubletsOnlyEn;
+            for (Int32 column = 1; column < selectedHeader.Count + 1; column++)
+            {
+                table.Cell(1, column).Range.Text = selectedHeader[column - 1];
+            }
         }
 
         private String GetComponentColumnValue<T>(T component, Int32 index, Decimal velocityStep, 
