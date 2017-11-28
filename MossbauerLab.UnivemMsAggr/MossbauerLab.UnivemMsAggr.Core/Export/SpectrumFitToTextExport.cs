@@ -74,8 +74,8 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             {
                 for (Int32 i = 0; i < data.Sextets.Count; i++)
                 {
-                    lines.Add(i == 0 ? ConvertSextet(data.SampleName, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, data.Info.ChiSquareValue, i)
-                                     : ConvertSextet(null, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, null, i));
+                    lines.Add(i == 0 ? ConvertSextet(data.SampleName, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, data.Info.ChiSquareValue, i +1)
+                                     : ConvertSextet(null, data.Sextets[i], data.Info.HyperfineFieldPerMmS, data.Info.VelocityStep, null, i + 1));
                 }
             }
             if (data.Doublets != null)
@@ -85,8 +85,8 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 {
 
                     lines.Add(i == 0 && doubletsOnly
-                                  ? ConvertDoublet(data.SampleName, data.Doublets[i], data.Info.VelocityStep, data.Info.ChiSquareValue, i, doubletsOnly)
-                                  : ConvertDoublet(null, data.Doublets[i], data.Info.VelocityStep, null, i, doubletsOnly));
+                                  ? ConvertDoublet(data.SampleName, data.Doublets[i], data.Info.VelocityStep, data.Info.ChiSquareValue, i + 1, doubletsOnly)
+                                  : ConvertDoublet(null, data.Doublets[i], data.Info.VelocityStep, null, i + 1, doubletsOnly));
                 }
             }
             return lines;
