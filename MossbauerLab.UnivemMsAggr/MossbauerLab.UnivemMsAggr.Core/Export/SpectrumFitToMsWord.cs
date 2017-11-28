@@ -91,6 +91,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             for (Int32 column = 1; column < selectedHeader.Count + 1; column++)
             {
                 table.Cell(1, column).Range.Text = selectedHeader[column - 1];
+                table.Cell(1, column).Range.Font.Bold = 1;
             }
         }
 
@@ -111,7 +112,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                     case HyperfineFieldSextetIndex:
                          return GetParameter(sextet.HyperfineField, sextet.HyperfineFieldError, hyperfineFieldError, 1, _hypFieldFormatInfo);
                     case RelativeAreaSextetIndex:
-                         return GetParameter(sextet.RelativeArea, sextet.RelativeAreaError, 0, 2, _areaFormatInfo);
+                         return GetParameter(sextet.RelativeArea, null /*sextet.RelativeAreaError*/, 0, 2, _areaFormatInfo);
                 }
             }
             else if (component is Doublet)
@@ -127,11 +128,11 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                          return GetParameter(doublet.QuadrupolSplitting, doublet.QuadrupolSplittingError, velocityStep, 3, _parametersFormatInfo);
                     case RelativeAreaDoubletIndex:
                          if (!mixedComponents)
-                             return GetParameter(doublet.RelativeArea, doublet.RelativeAreaError, 0, 2, _areaFormatInfo);
+                             return GetParameter(doublet.RelativeArea, null /*sextet.RelativeAreaError*/, 0, 2, _areaFormatInfo);
                          break;
                     case RelativeAreaSextetIndex:
                          if (mixedComponents)
-                            return GetParameter(doublet.RelativeArea, doublet.RelativeAreaError, 0, 2, _areaFormatInfo);
+                             return GetParameter(doublet.RelativeArea, null /*sextet.RelativeAreaError*/, 0, 2, _areaFormatInfo);
                          break;
                 }
             }
@@ -158,17 +159,32 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             _msWordDocument = _msWordApplication.Documents.Add(); // without template, create no template and others ...
             // creating bookmark
             Object missing = System.Reflection.Missing.Value;
-            /* \endofdoc is a predefined bookmark */
+            // ReSharper disable UseIndexedProperty
             Object range = _msWordDocument.Bookmarks.get_Item(ref _endOfDoc).Range; //go to end of the page
+            
             Paragraph paragraph = _msWordDocument.Content.Paragraphs.Add(ref range); //add paragraph at end of document
             paragraph.Range.Text = "Test Table Caption"; //add some text in paragraph
             paragraph.Format.SpaceAfter = 10; //define some style
             paragraph.Range.InsertParagraphAfter(); //insert paragraph
             Range wordRange = _msWordDocument.Bookmarks.get_Item(ref _endOfDoc).Range;
+            // ReSharper restore UseIndexedProperty
             // creating table
-            // todo: umv: create private method returns table
-            Table componentsTable = _msWordDocument.Tables.Add(wordRange, rows, columns, ref missing, ref missing);
-            return componentsTable;
+            Table table = _msWordDocument.Tables.Add(wordRange, rows, columns, ref missing, ref missing);
+            SetTableStyle(table);
+            return table;
+        }
+
+        private void SetTableStyle(Table table)
+        {
+            table.Borders.InsideLineStyle = WdLineStyle.wdLineStyleSingle;
+            table.Borders.OutsideLineStyle = WdLineStyle.wdLineStyleSingle;
+            table.Range.Font.Name = "Times New Roman";
+            table.Range.Font.Size = 12.0F;
+            table.Range.Font.Bold = 0;
+            table.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+            //table.LeftPadding = 0.5f;
+            //table.RightPadding = 0.5f;
+            table.AllowAutoFit = true;
         }
 
         private const Int32 LineWidthSextetIndex = 2;
