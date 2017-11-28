@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using MossbauerLab.UnivemMsAggr.Core.Data;
 using MossbauerLab.UnivemMsAggr.Core.Export;
 using MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor;
@@ -31,7 +28,19 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.Export
             Assert.AreEqual(fit.Doublets.Count + fit.Sextets.Count + 1, lines.Count, "Checking export formally: by number of lines");
         }
 
+        [Test]
+        public void TestExportMultipleFits()
+        {
+            SpectrumFit fitNa = CompProcessor.Process(NickelFerriteNaCompFile);
+            SpectrumFit fitNb = CompProcessor.Process(NickelFerriteNbCompFile);
+            _exportService.Export(OutFile, new[] {fitNa, fitNb});
+            IList<String> lines = File.ReadAllLines(OutFile);
+            Assert.AreEqual(fitNa.Doublets.Count + fitNa.Sextets.Count +
+                            fitNb.Doublets.Count + fitNb.Sextets.Count + 1, lines.Count, "Checking export formally: by number of lines");
+        }
+
         private const String NickelFerriteNaCompFile = @"..\..\CompFilesExamples\Indian.NiFe2.O4-NA-2-4096_comp.10s-2017-3.txt";
+        private const String NickelFerriteNbCompFile = @"..\..\CompFilesExamples\Indian.NiFe2.O4-NB-2-4096_comp.10s-2017-3.txt";
         private const String Bioffer2CompFile = @"..\..\CompFilesExamples\BIOFER2-1024_comp_7s1d.txt";
         private const String FakeDoubletsCompFile = @"..\..\CompFilesExamples\Fake_spec_comp.txt";
         private const String OutFile = @"Result.txt";
