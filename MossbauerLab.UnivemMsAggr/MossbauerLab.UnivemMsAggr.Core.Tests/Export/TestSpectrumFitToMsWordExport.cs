@@ -19,10 +19,12 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.Export
             File.Delete(OutFile);
         }
 
-        [Test]
-        public void TestExportSingleFit()
+        [TestCase(NickelFerriteNaCompFile)]
+        [TestCase(Bioffer2CompFile)]
+        [TestCase(FakeDoubletsCompFile)]
+        public void TestExportSingleFit(String componentsFile)
         {
-            SpectrumFit fit = CompProcessor.Process(NickelFerriteNaCompFile);
+            SpectrumFit fit = CompProcessor.Process(componentsFile);
             _exportService.Export(OutFile, fit);
         }
 
