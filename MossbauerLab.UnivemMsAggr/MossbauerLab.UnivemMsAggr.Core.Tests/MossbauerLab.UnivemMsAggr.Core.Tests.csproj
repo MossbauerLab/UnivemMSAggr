@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Export\TestSpectrumFitToMsWordExport.cs" />
     <Compile Include="Export\TestSpectrumFitToTextExport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnivemMs\FileProcessor\TestCompProcessor.cs" />
