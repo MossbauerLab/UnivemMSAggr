@@ -184,6 +184,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             table.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
             //table.LeftPadding = 0.5f;
             //table.RightPadding = 0.5f;
+            table.AutoFitBehavior(WdAutoFitBehavior.wdAutoFitContent);
             table.AllowAutoFit = true;
         }
 
