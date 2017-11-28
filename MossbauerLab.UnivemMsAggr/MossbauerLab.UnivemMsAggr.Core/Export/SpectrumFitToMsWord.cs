@@ -67,13 +67,15 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                                     componentsTable.Cell(row, column).Range.Text = data.SampleName;
                                 else if (row == 2 && column == 6)
                                     componentsTable.Cell(row, column).Range.Text = data.Info.ChiSquareValue.ToString(CultureInfo.InvariantCulture);
-                                else if (column == ComponentNameDoubletIndex)
-                                    componentsTable.Cell(row, column).Range.Text = "D" + (row - startIndex);
+                                else if ((column == ComponentNameDoubletIndex && doubletsOnly) ||
+                                         (column == ComponentNameSextetIndex && !doubletsOnly))
+                                    componentsTable.Cell(row, column).Range.Text = "D" + (doubletsOnly ? (row - startIndex) : (row - startIndex + 1));
                                 else
                                     componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Doublets[(startIndex > 1 ? 
                                                                                                                          row - startIndex: row - 2)], column,
                                                                                                            data.Info.VelocityStep,
-                                                                                                           data.Info.HyperfineFieldPerMmS);
+                                                                                                           data.Info.HyperfineFieldPerMmS,
+                                                                                                           !doubletsOnly);
                             }
                         }
                     }
@@ -92,7 +94,8 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             throw new NotImplementedException();
         }
 
-        private String GetComponentColumnValue<T>(T component, Int32 index, Decimal velocityStep, Decimal hyperfineFieldError) where T : class
+        private String GetComponentColumnValue<T>(T component, Int32 index, Decimal velocityStep, 
+                                                  Decimal hyperfineFieldError, Boolean mixedComponents = true) where T : class
         {
             if (component is Sextet)
             {
@@ -123,7 +126,13 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                     case QuadrupolSplittingDoubletIndex:
                          return GetParameter(doublet.QuadrupolSplitting, doublet.QuadrupolSplittingError, velocityStep, 3, _parametersFormatInfo);
                     case RelativeAreaDoubletIndex:
-                         return GetParameter(doublet.RelativeArea, doublet.RelativeAreaError, 0, 2, _areaFormatInfo);
+                         if (!mixedComponents)
+                             return GetParameter(doublet.RelativeArea, doublet.RelativeAreaError, 0, 2, _areaFormatInfo);
+                         break;
+                    case RelativeAreaSextetIndex:
+                         if (mixedComponents)
+                            return GetParameter(doublet.RelativeArea, doublet.RelativeAreaError, 0, 2, _areaFormatInfo);
+                         break;
                 }
             }
             else throw new InvalidOperationException("component can't be only Doublet or Sextet");
@@ -174,6 +183,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
         private const Int32 IsomerShiftDoubletIndex = 3;
         private const Int32 QuadrupolSplittingDoubletIndex = 4;
         private const Int32 RelativeAreaDoubletIndex = 5;
+        private const Int32 ChiSquareValueDoubletIndex = 6;
         private const Int32 ComponentNameDoubletIndex = 7;
 
         private readonly NumberFormatInfo _parametersFormatInfo = new NumberFormatInfo();
