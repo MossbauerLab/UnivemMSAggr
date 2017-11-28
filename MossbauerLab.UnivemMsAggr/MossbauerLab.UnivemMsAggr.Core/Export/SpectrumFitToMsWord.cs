@@ -28,7 +28,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 Int32 rows = (!doubletsOnly) ? data.Sextets.Count + data.Doublets.Count + 1 : data.Doublets.Count + 1;
                 Int32 columns = (!doubletsOnly) ? _tableHeaderMixedCompEn.Count : _tableHeaderDoubletsOnlyEn.Count;
                 Table componentsTable = CreateDocTable(rows, columns);
-                if (data.Sextets != null)
+                if (data.Sextets != null && data.Sextets.Count > 0)
                 {
                     for (Int32 row = 1; row <= data.Sextets.Count + 1; row++)
                     {
@@ -68,9 +68,10 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                                 else if (row == 2 && column == 6)
                                     componentsTable.Cell(row, column).Range.Text = data.Info.ChiSquareValue.ToString(CultureInfo.InvariantCulture);
                                 else if (column == ComponentNameDoubletIndex)
-                                    componentsTable.Cell(row, column).Range.Text = "D" + (row - 1);
+                                    componentsTable.Cell(row, column).Range.Text = "D" + (row - startIndex);
                                 else
-                                    componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Doublets[row - startIndex - 2], column,
+                                    componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Doublets[(startIndex > 1 ? 
+                                                                                                                         row - startIndex: row - 2)], column,
                                                                                                            data.Info.VelocityStep,
                                                                                                            data.Info.HyperfineFieldPerMmS);
                             }

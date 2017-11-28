@@ -25,7 +25,8 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.Export
         public void TestExportSingleFit(String componentsFile)
         {
             SpectrumFit fit = CompProcessor.Process(componentsFile);
-            _exportService.Export(OutFile, fit);
+            Boolean result =_exportService.Export(OutFile, fit);
+            Assert.IsTrue(result, "check if result is true");
         }
 
         private const String NickelFerriteNaCompFile = @"..\..\CompFilesExamples\Indian.NiFe2.O4-NA-2-4096_comp.10s-2017-3.txt";
