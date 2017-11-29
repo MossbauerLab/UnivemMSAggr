@@ -9,7 +9,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Data.SpectralComponents
         }
 
         public Sextet(Decimal lineWidth, Decimal? lineWidthError,
-                      Decimal isomerShift, Decimal? isomerShiftPError,
+                      Decimal isomerShift, Decimal? isomerShiftError,
                       Decimal quadrupolShift, Decimal? quadrupolShiftError,
                       Decimal hyperfineField, Decimal? hyperfineFieldError,
                       Decimal relativeArea, Decimal? relativeAreaError)
@@ -17,7 +17,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Data.SpectralComponents
             LineWidth = lineWidth;
             LineWidthError = lineWidthError;
             IsomerShift = isomerShift;
-            IsomerShiftPError = isomerShiftPError;
+            IsomerShiftError = isomerShiftError;
             QuadrupolShift = quadrupolShift;
             QuadrupolShiftError = quadrupolShiftError;
             HyperfineField = hyperfineField;
@@ -30,7 +30,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Data.SpectralComponents
         public Decimal LineWidth { get; set; }
         public Decimal? LineWidthError { get; set; }
         public Decimal IsomerShift { get; set; }
-        public Decimal? IsomerShiftPError { get; set; }
+        public Decimal? IsomerShiftError { get; set; }
         public Decimal QuadrupolShift { get; set; }
         public Decimal? QuadrupolShiftError { get; set; }
         public Decimal HyperfineField { get; set; }

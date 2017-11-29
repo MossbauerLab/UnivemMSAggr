@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Export\TestSpectrumFitToMsWordExport.cs" />
+    <Compile Include="Export\TestSpectrumFitToTextExport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnivemMs\FileProcessor\TestCompProcessor.cs" />
   </ItemGroup>
@@ -58,6 +60,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="CompFilesExamples\BIOFER2-1024_comp_7s1d.txt" />
+    <Content Include="CompFilesExamples\Fake_spec_comp.txt" />
     <Content Include="CompFilesExamples\Indian.NiFe2.O4-NA-2-4096_comp.10s-2017-3.txt" />
     <Content Include="CompFilesExamples\Indian.NiFe2.O4-NB-2-4096_comp.10s-2017-3.txt" />
   </ItemGroup>
