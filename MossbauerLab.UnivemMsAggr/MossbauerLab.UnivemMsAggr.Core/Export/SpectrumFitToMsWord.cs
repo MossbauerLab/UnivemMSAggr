@@ -29,20 +29,37 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 Int32 columns = (!doubletsOnly) ? _tableHeaderMixedCompEn.Count : _tableHeaderDoubletsOnlyEn.Count;
                 Table componentsTable = CreateDocTable(rows, columns);
                 CreateTableHeader(componentsTable, !doubletsOnly);
+                return ExportFitImpl(data, componentsTable, !doubletsOnly, 2, rows, columns);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public Boolean Export(String destination, IList<SpectrumFit> data)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Boolean ExportFitImpl(SpectrumFit data, Table componentsTable, Boolean mixedComponents, Int32 startRowIndex, Int32 rows, Int32 columns)
+        {
+            try
+            {
                 if (data.Sextets != null && data.Sextets.Count > 0)
                 {
-                    for (Int32 row = 2; row <= data.Sextets.Count + 1; row++)
+                    for (Int32 row = startRowIndex; row <= data.Sextets.Count + 1; row++)
                     {
                         for (Int32 column = 1; column <= _tableHeaderMixedCompEn.Count; column++)
                         {
-                            if (row == 2 && column == 1)
+                            if (row == startRowIndex && column == 1)
                                 componentsTable.Cell(row, column).Range.Text = data.SampleName;
-                            else if (row == 2 && column == ChiSquareValueSextetIndex)
+                            else if (row == startRowIndex && column == ChiSquareValueSextetIndex)
                                 componentsTable.Cell(row, column).Range.Text = data.Info.ChiSquareValue.ToString(CultureInfo.InvariantCulture);
                             else if (column == ComponentNameSextetIndex)
                                 componentsTable.Cell(row, column).Range.Text = "S" + (row - 1);
                             else
-                                componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Sextets[row - 2], column,
+                                componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Sextets[row - startRowIndex], column,
                                                                                                        data.Info.VelocityStep,
                                                                                                        data.Info.HyperfineFieldPerMmS);
                         }
@@ -50,24 +67,24 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 }
                 if (data.Doublets != null)
                 {
-                    Int32 startIndex = doubletsOnly ? 2 : data.Sextets.Count + 2;
+                    Int32 startIndex = !mixedComponents ? startRowIndex : data.Sextets.Count + startRowIndex;
                     for (Int32 row = startIndex; row <= rows; row++)
                     {
                         for (Int32 column = 1; column <= columns; column++)
                         {
-                             if (row == 2 && column == 1)
+                             if (row == startRowIndex && column == 1)
                                  componentsTable.Cell(row, column).Range.Text = data.SampleName;
-                             else if (row == 2 && column == 6)
+                             else if (row == startRowIndex && column == 6)
                                  componentsTable.Cell(row, column).Range.Text = data.Info.ChiSquareValue.ToString(CultureInfo.InvariantCulture);
-                             else if ((column == ComponentNameDoubletIndex && doubletsOnly) ||
-                                      (column == ComponentNameSextetIndex && !doubletsOnly))
+                             else if ((column == ComponentNameDoubletIndex && !mixedComponents) ||
+                                      (column == ComponentNameSextetIndex && mixedComponents))
                                  componentsTable.Cell(row, column).Range.Text = "D" + (row - startIndex + 1);
                              else
-                                 componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Doublets[(startIndex > 1 ?  row - startIndex: row - 2)], 
+                                 componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Doublets[(startIndex > 1 ? row - startIndex : row - startRowIndex)], 
                                                                                                         column,
                                                                                                         data.Info.VelocityStep,
                                                                                                         data.Info.HyperfineFieldPerMmS,
-                                                                                                        !doubletsOnly);
+                                                                                                        mixedComponents);
                         }
                     }
                 }
@@ -78,11 +95,6 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             }
 
             return true;
-        }
-
-        public Boolean Export(String destination, IList<SpectrumFit> data)
-        {
-            throw new NotImplementedException();
         }
 
         private void CreateTableHeader(Table table, Boolean mixedComponents)
