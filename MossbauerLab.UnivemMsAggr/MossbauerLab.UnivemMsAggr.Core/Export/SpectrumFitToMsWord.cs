@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using MossbauerLab.UnivemMsAggr.Core.Data;
@@ -30,10 +31,11 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 Int32 columns = (!doubletsOnly) ? _tableHeaderMixedCompEn.Count : _tableHeaderDoubletsOnlyEn.Count;
                 Table componentsTable = CreateDocTable(rows, columns);
                 CreateTableHeader(componentsTable, !doubletsOnly);
-                return ExportFitImpl(data, componentsTable, !doubletsOnly, 2, columns);
-                //todo: umv: SaveDoc
+                Boolean result = ExportFitImpl(data, componentsTable, !doubletsOnly, 2, columns);
+                _msWordDocument.SaveAs(Path.GetFullPath(destination));
+                return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -66,9 +68,11 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                     result &= ExportFitImpl(data[i], componentsTable, !doubletsOnly, startIndex, columns);
                     startIndex += data[i].Sextets.Count + data[i].Doublets.Count;
                 }
+                _msWordDocument.SaveAs(Path.GetFullPath(destination));
+                _msWordDocument.Close();
                 return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -125,7 +129,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -204,7 +208,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
 
         private Table CreateDocTable(Int32 rows, Int32 columns)
         {
-            _msWordApplication.Visible = true;
+            //_msWordApplication.Visible = true;
             _msWordDocument = _msWordApplication.Documents.Add(); // without template, create no template and others ...
             // creating bookmark
             Object missing = System.Reflection.Missing.Value;
@@ -249,7 +253,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
         private const Int32 IsomerShiftDoubletIndex = 3;
         private const Int32 QuadrupolSplittingDoubletIndex = 4;
         private const Int32 RelativeAreaDoubletIndex = 5;
-        private const Int32 ChiSquareValueDoubletIndex = 6;
+        //private const Int32 ChiSquareValueDoubletIndex = 6;
         private const Int32 ComponentNameDoubletIndex = 7;
 
         private readonly NumberFormatInfo _parametersFormatInfo = new NumberFormatInfo();
