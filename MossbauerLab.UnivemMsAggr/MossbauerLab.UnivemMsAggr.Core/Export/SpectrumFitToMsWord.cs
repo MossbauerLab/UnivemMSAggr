@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using MossbauerLab.UnivemMsAggr.Core.Data;
 using Microsoft.Office.Interop.Word;
@@ -30,6 +31,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 Table componentsTable = CreateDocTable(rows, columns);
                 CreateTableHeader(componentsTable, !doubletsOnly);
                 return ExportFitImpl(data, componentsTable, !doubletsOnly, 2, rows, columns);
+                //todo: umv: SaveDoc
             }
             catch (Exception e)
             {
@@ -39,7 +41,38 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
 
         public Boolean Export(String destination, IList<SpectrumFit> data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Boolean result = true;
+                Boolean doubletsOnly = !data.Any(item => item.Sextets != null && item.Sextets.Count > 0);
+                Int32 sextets = data.Select(item => item.Sextets.Count).Aggregate((item, total) =>
+                {
+                    total += item;
+                    return total;
+                });
+                Int32 doublets = data.Select(item => item.Doublets.Count).Aggregate((item, total) =>
+                {
+                    total += item;
+                    return total;
+                });
+                Int32 rows = sextets + doublets;
+                Int32 columns = (!doubletsOnly) ? _tableHeaderMixedCompEn.Count : _tableHeaderDoubletsOnlyEn.Count;
+                Table componentsTable = CreateDocTable(rows, columns);
+                CreateTableHeader(componentsTable, !doubletsOnly);
+                Int32 startIndex = 2;
+                for (Int32 i = 0; i < data.Count; i++)
+                {
+
+                    result &= ExportFitImpl(data[i], componentsTable, !doubletsOnly, startIndex,
+                        data[i].Sextets.Count + data[i].Doublets.Count, columns);
+                    startIndex += data[i].Sextets.Count + data[i].Doublets.Count;
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         private Boolean ExportFitImpl(SpectrumFit data, Table componentsTable, Boolean mixedComponents, Int32 startRowIndex, Int32 rows, Int32 columns)
@@ -48,7 +81,8 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             {
                 if (data.Sextets != null && data.Sextets.Count > 0)
                 {
-                    for (Int32 row = startRowIndex; row <= data.Sextets.Count + 1; row++)
+                    Int32 sextetCounter = 0;
+                    for (Int32 row = startRowIndex; row < startRowIndex + data.Sextets.Count; row++)
                     {
                         for (Int32 column = 1; column <= _tableHeaderMixedCompEn.Count; column++)
                         {
@@ -57,17 +91,20 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                             else if (row == startRowIndex && column == ChiSquareValueSextetIndex)
                                 componentsTable.Cell(row, column).Range.Text = data.Info.ChiSquareValue.ToString(CultureInfo.InvariantCulture);
                             else if (column == ComponentNameSextetIndex)
-                                componentsTable.Cell(row, column).Range.Text = "S" + (row - 1);
+                                componentsTable.Cell(row, column).Range.Text = "S" + (sextetCounter + 1);
                             else
-                                componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Sextets[row - startRowIndex], column,
+                                componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Sextets[sextetCounter], column,
                                                                                                        data.Info.VelocityStep,
                                                                                                        data.Info.HyperfineFieldPerMmS);
                         }
+                        sextetCounter++;
                     }
                 }
                 if (data.Doublets != null)
                 {
-                    Int32 startIndex = !mixedComponents ? startRowIndex : data.Sextets.Count + startRowIndex;
+                    Int32 doubletCounter = 0;
+                    Int32 startIndex = //!mixedComponents ? startRowIndex : 
+                        (data.Sextets != null ? data.Sextets.Count : 0) + startRowIndex;
                     for (Int32 row = startIndex; row <= rows; row++)
                     {
                         for (Int32 column = 1; column <= columns; column++)
@@ -78,14 +115,15 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                                  componentsTable.Cell(row, column).Range.Text = data.Info.ChiSquareValue.ToString(CultureInfo.InvariantCulture);
                              else if ((column == ComponentNameDoubletIndex && !mixedComponents) ||
                                       (column == ComponentNameSextetIndex && mixedComponents))
-                                 componentsTable.Cell(row, column).Range.Text = "D" + (row - startIndex + 1);
+                                 componentsTable.Cell(row, column).Range.Text = "D" + (doubletCounter + 1);
                              else
-                                 componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Doublets[(startIndex > 1 ? row - startIndex : row - startRowIndex)], 
+                                 componentsTable.Cell(row, column).Range.Text = GetComponentColumnValue(data.Doublets[doubletCounter], 
                                                                                                         column,
                                                                                                         data.Info.VelocityStep,
                                                                                                         data.Info.HyperfineFieldPerMmS,
                                                                                                         mixedComponents);
                         }
+                        doubletCounter++;
                     }
                 }
             }
