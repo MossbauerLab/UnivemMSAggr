@@ -32,7 +32,9 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 Table componentsTable = CreateDocTable(rows, columns);
                 CreateTableHeader(componentsTable, !doubletsOnly);
                 Boolean result = ExportFitImpl(data, componentsTable, !doubletsOnly, 2, columns);
+                //todo : add remark if needed
                 _msWordDocument.SaveAs(Path.GetFullPath(destination));
+                _msWordDocument.Close();
                 return result;
             }
             catch (Exception)
@@ -68,6 +70,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                     result &= ExportFitImpl(data[i], componentsTable, !doubletsOnly, startIndex, columns);
                     startIndex += data[i].Sextets.Count + data[i].Doublets.Count;
                 }
+                //todo : add remark if needed
                 _msWordDocument.SaveAs(Path.GetFullPath(destination));
                 _msWordDocument.Close();
                 return result;

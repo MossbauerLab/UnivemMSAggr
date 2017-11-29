@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using MossbauerLab.UnivemMsAggr.Core.Data;
 using MossbauerLab.UnivemMsAggr.Core.Export;
 using MossbauerLab.UnivemMsAggr.Core.UnivemMs.FilesProcessor;
@@ -39,6 +36,36 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.Export
             SpectrumFit fit2 = CompProcessor.Process(componentsFile2);
             fit2.SampleName = "SAMP#2";
             Boolean result = _exportService.Export(OutFile, new[] {fit1, fit2});
+            Assert.IsTrue(result, "check if result is true");
+        }
+
+
+        [Test]
+        public void TestExportRunTwice()
+        {
+            SpectrumFit fit1 = CompProcessor.Process(NickelFerriteNaCompFile);
+            fit1.SampleName = "SAMP#1";
+            SpectrumFit fit2 = CompProcessor.Process(NickelFerriteNbCompFile);
+            fit2.SampleName = "SAMP#2";
+            Boolean result = _exportService.Export(OutFile, fit1);
+            Assert.IsTrue(result, "check if result is true");
+            File.Delete(OutFile);
+            result = _exportService.Export(OutFile, fit2);
+            Assert.IsTrue(result, "check if result is true");
+        }
+
+        [Test]
+        public void TestExportManyFits()
+        {
+            SpectrumFit fit1 = CompProcessor.Process(NickelFerriteNaCompFile);
+            fit1.SampleName = "SAMP#1";
+            SpectrumFit fit2 = CompProcessor.Process(NickelFerriteNbCompFile);
+            fit2.SampleName = "SAMP#2";
+            SpectrumFit fit3 = CompProcessor.Process(FakeDoubletsCompFile);
+            fit3.SampleName = "SAMP#3";
+            SpectrumFit fit4 = CompProcessor.Process(Bioffer2CompFile);
+            fit4.SampleName = "SAMP#4";
+            Boolean result = _exportService.Export(OutFile, new[] { fit1, fit2, fit3, fit4 });
             Assert.IsTrue(result, "check if result is true");
         }
 
