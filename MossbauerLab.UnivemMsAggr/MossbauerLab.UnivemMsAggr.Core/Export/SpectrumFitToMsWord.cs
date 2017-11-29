@@ -32,7 +32,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 Table componentsTable = CreateDocTable(rows, columns);
                 CreateTableHeader(componentsTable, !doubletsOnly);
                 Boolean result = ExportFitImpl(data, componentsTable, !doubletsOnly, 2, columns);
-                //todo : add remark if needed
+                AddRemark();
                 _msWordDocument.SaveAs(Path.GetFullPath(destination));
                 _msWordDocument.Close();
                 return result;
@@ -70,7 +70,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                     result &= ExportFitImpl(data[i], componentsTable, !doubletsOnly, startIndex, columns);
                     startIndex += data[i].Sextets.Count + data[i].Doublets.Count;
                 }
-                //todo : add remark if needed
+                AddRemark();
                 _msWordDocument.SaveAs(Path.GetFullPath(destination));
                 _msWordDocument.Close();
                 return result;
@@ -205,7 +205,11 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 Decimal errorValue = error > comparator ? error.Value : comparator;
                 builder.Append(Decimal.Round(errorValue, round).ToString(format));
             }
-            else if (appendRemark) builder.Append("*");
+            else if(appendRemark)
+            {
+                builder.Append("*");
+                _remarkPresent = true;
+            }
             return builder.ToString();
         }
 
@@ -244,6 +248,23 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             table.AllowAutoFit = true;
         }
 
+        private void AddRemark()
+        {
+            if (_remarkPresent)
+            {
+                // ReSharper disable once UseIndexedProperty
+                Object range = _msWordDocument.Bookmarks.get_Item(ref _endOfDoc).Range; //go to end of the page
+
+                Paragraph paragraph = _msWordDocument.Content.Paragraphs.Add(ref range); //add paragraph at end of document
+                paragraph.Range.Font.Name = "Times New Roman";
+                paragraph.Range.Font.Size = 12.0F;
+                paragraph.Range.Text = "* - Error was not defined"; //add some text in paragraph
+                paragraph.Format.SpaceAfter = 10; //define some style
+                paragraph.Range.InsertParagraphAfter(); //insert paragraph
+                _remarkPresent = false;
+            }
+        }
+
         private const Int32 LineWidthSextetIndex = 2;
         private const Int32 IsomerShiftSextetIndex = 3;
         private const Int32 QuadrupolSplittingSextetIndex = 4;
@@ -275,5 +296,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
         {
             "Sample", "Γ, mm/s", "δ, mm/s", "2έ, mm/s", "A, %", "χ2", "Component"
         };
+
+        private Boolean _remarkPresent;
     }
 }
