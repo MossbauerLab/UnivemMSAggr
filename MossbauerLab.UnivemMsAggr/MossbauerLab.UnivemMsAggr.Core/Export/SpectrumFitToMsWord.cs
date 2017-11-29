@@ -30,7 +30,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 Int32 columns = (!doubletsOnly) ? _tableHeaderMixedCompEn.Count : _tableHeaderDoubletsOnlyEn.Count;
                 Table componentsTable = CreateDocTable(rows, columns);
                 CreateTableHeader(componentsTable, !doubletsOnly);
-                return ExportFitImpl(data, componentsTable, !doubletsOnly, 2, rows, columns);
+                return ExportFitImpl(data, componentsTable, !doubletsOnly, 2, columns);
                 //todo: umv: SaveDoc
             }
             catch (Exception e)
@@ -55,7 +55,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                     total += item;
                     return total;
                 });
-                Int32 rows = sextets + doublets;
+                Int32 rows = sextets + doublets + 1;
                 Int32 columns = (!doubletsOnly) ? _tableHeaderMixedCompEn.Count : _tableHeaderDoubletsOnlyEn.Count;
                 Table componentsTable = CreateDocTable(rows, columns);
                 CreateTableHeader(componentsTable, !doubletsOnly);
@@ -63,8 +63,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 for (Int32 i = 0; i < data.Count; i++)
                 {
 
-                    result &= ExportFitImpl(data[i], componentsTable, !doubletsOnly, startIndex,
-                        data[i].Sextets.Count + data[i].Doublets.Count, columns);
+                    result &= ExportFitImpl(data[i], componentsTable, !doubletsOnly, startIndex, columns);
                     startIndex += data[i].Sextets.Count + data[i].Doublets.Count;
                 }
                 return result;
@@ -75,7 +74,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             }
         }
 
-        private Boolean ExportFitImpl(SpectrumFit data, Table componentsTable, Boolean mixedComponents, Int32 startRowIndex, Int32 rows, Int32 columns)
+        private Boolean ExportFitImpl(SpectrumFit data, Table componentsTable, Boolean mixedComponents, Int32 startRowIndex,  Int32 columns)
         {
             try
             {
@@ -103,9 +102,8 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 if (data.Doublets != null)
                 {
                     Int32 doubletCounter = 0;
-                    Int32 startIndex = //!mixedComponents ? startRowIndex : 
-                        (data.Sextets != null ? data.Sextets.Count : 0) + startRowIndex;
-                    for (Int32 row = startIndex; row <= rows; row++)
+                    Int32 startIndex = (data.Sextets != null ? data.Sextets.Count : 0) + startRowIndex;
+                    for (Int32 row = startIndex; row < data.Doublets.Count + startIndex; row++)
                     {
                         for (Int32 column = 1; column <= columns; column++)
                         {

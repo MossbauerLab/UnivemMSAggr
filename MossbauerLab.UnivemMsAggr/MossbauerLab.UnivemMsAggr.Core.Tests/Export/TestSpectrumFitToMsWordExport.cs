@@ -30,10 +30,14 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.Export
         }
 
         [TestCase(NickelFerriteNaCompFile, NickelFerriteNbCompFile)]
+        [TestCase(Bioffer2CompFile, NickelFerriteNbCompFile)]
+        [TestCase(FakeDoubletsCompFile, Bioffer2CompFile)]
         public void TestExportMultipleFits(String componentsFile1, String componentsFile2)
         {
             SpectrumFit fit1 = CompProcessor.Process(componentsFile1);
+            fit1.SampleName = "SAMP#1";
             SpectrumFit fit2 = CompProcessor.Process(componentsFile2);
+            fit2.SampleName = "SAMP#2";
             Boolean result = _exportService.Export(OutFile, new[] {fit1, fit2});
             Assert.IsTrue(result, "check if result is true");
         }
