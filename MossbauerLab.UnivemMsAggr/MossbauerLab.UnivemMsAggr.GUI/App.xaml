@@ -3,6 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Image x:Key="AddItem" Source="img\add_30px.png"/>
+        <Image x:Key="DeleteItem" Source="img\del_30px.png"/>
+        <Image x:Key="MoveItemUp" Source="img\up_30px.png"/>
+        <Image x:Key="MoveItemDown" Source="img\down_30px.png"/>
+        <Image x:Key="Run" Source="img\run_30px.png"/>
     </Application.Resources>
 </Application>
