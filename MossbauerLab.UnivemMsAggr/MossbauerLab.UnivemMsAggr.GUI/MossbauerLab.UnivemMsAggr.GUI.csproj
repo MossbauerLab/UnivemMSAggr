@@ -53,6 +53,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\AddNewCompCommand.cs" />
+    <Compile Include="Commands\MoveItemUpCommand.cs" />
+    <Compile Include="Commands\RemoveCompCommand.cs" />
+    <Compile Include="Commands\RunProcessingCommand.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

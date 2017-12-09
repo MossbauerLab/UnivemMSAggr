@@ -4,7 +4,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Models
 {
     public class CompSelectionModel
     {
-        /*public CompSelectionModel()
+        public CompSelectionModel()
         {
         }
 
@@ -12,7 +12,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Models
         {
             SampleName = sampleName;
             SpectrumComponentFile = spectrumComponentFile;
-        }*/
+        }
 
         public String SampleName { get; set; }
         public String SpectrumComponentFile { get; set; }

@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MossbauerLab.UnivemMsAggr.GUI.Commands;
+using MossbauerLab.UnivemMsAggr.GUI.ViewModels;
 
 namespace MossbauerLab.UnivemMsAggr.GUI
 {
@@ -22,6 +24,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
         }
     }
 }
