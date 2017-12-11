@@ -16,17 +16,8 @@
             <Button Content="{StaticResource MoveItemDown}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" Command="{Binding MoveItemCommand}"/>
             <Button Content="{StaticResource Run}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" Command="{Binding RunCommand}"/>
         </WrapPanel>
-        <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" AutoGenerateColumns="True" HorizontalGridLinesBrush="White" AlternatingRowBackground="SandyBrown" Background="White">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Sample name" FontWeight ="Bold" Width="100" Binding="{Binding Path = SampleName}"/>
-                <DataGridTextColumn Header="Univem MS components file" FontWeight ="Bold" Width="200" Binding="{Binding Path = SpectrumComponentFile}"/>
-            </DataGrid.Columns>
-            <DataGrid.Items>
-                    <models:CompSelectionModel SampleName ="NA" SpectrumComponentFile="Indian_NA_10s1_comp.txt"/>
-                    <models:CompSelectionModel SampleName ="NB" SpectrumComponentFile="Indian_NB_10s1_comp.txt"/>
-                    <models:CompSelectionModel SampleName ="NC" SpectrumComponentFile="Indian_NC_10s1_comp.txt"/>
-                    <models:CompSelectionModel SampleName ="ND" SpectrumComponentFile="Indian_ND_10s1_comp.txt"/>
-            </DataGrid.Items>
+        <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" AutoGenerateColumns="True" HorizontalGridLinesBrush="White" 
+                  AlternatingRowBackground="SandyBrown" Background="White" ItemsSource="{Binding UnivemMsSpectraCompFiles}">
         </DataGrid>
     </Grid>
 </Window>

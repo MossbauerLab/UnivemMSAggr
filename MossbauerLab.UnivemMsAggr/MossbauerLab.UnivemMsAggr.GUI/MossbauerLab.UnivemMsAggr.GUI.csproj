@@ -53,7 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\AddNewCompCommand.cs" />
+    <Compile Include="Commands\AddCompCommand.cs" />
     <Compile Include="Commands\MoveItemCommand.cs" />
     <Compile Include="Commands\RemoveCompCommand.cs" />
     <Compile Include="Commands\RunProcessingCommand.cs" />

@@ -1,26 +1,28 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
+using MossbauerLab.UnivemMsAggr.GUI.Models;
 
 namespace MossbauerLab.UnivemMsAggr.GUI.Commands
 {
-    public class AddNewCompCommand : ICommand
+    public class AddCompCommand : ICommand
     {
-        public AddNewCompCommand()
+        public AddCompCommand(Action<CompSelectionModel> handlerAction)
         {
+            if (handlerAction == null)
+                throw new ArgumentNullException("handlerAction");
+            _handlerAction = handlerAction;
         }
 
         public void Execute(Object parameter)
         {
-            throw new NotImplementedException();
+            CompSelectionModel compFile = parameter as CompSelectionModel;
+            if (compFile != null)
+                _handlerAction(compFile);
         }
 
         public Boolean CanExecute(Object parameter)
         {
-            //throw new NotImplementedException();
             return true;
         }
 
@@ -36,5 +38,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
                 CommandManager.RequerySuggested -= value; 
             }
         }*/
+
+        private Action<CompSelectionModel> _handlerAction;
     }
 }
