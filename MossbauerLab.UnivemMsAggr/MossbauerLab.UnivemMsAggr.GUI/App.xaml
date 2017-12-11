@@ -11,6 +11,6 @@
         <Image x:Key="MoveItemDown" Source="img\down_30px.png"/>
         <Image x:Key="Run" Source="img\run_30px.png"/>
         <!-- Bindings -->
-        <viewModels:MainWindowViewModel x:Key="MainWindowViewModel" />
+        <!-- <viewModels:MainWindowViewModel x:Key="MainWindowViewModel" /> -->
     </Application.Resources>
 </Application>

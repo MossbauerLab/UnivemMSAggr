@@ -54,7 +54,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\AddNewCompCommand.cs" />
-    <Compile Include="Commands\MoveItemUpCommand.cs" />
+    <Compile Include="Commands\MoveItemCommand.cs" />
     <Compile Include="Commands\RemoveCompCommand.cs" />
     <Compile Include="Commands\RunProcessingCommand.cs" />
     <Compile Include="Properties\Annotations.cs" />

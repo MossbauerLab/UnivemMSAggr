@@ -11,7 +11,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
     {
         public AddNewCompCommand()
         {
-            throw new NotImplementedException("AddNewCompCommand");
         }
 
         public void Execute(Object parameter)
@@ -21,9 +20,21 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
 
         public Boolean CanExecute(Object parameter)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return true;
         }
 
         public event EventHandler CanExecuteChanged;
+        /*{
+            add
+            {
+                CommandManager.RequerySuggested += value; 
+            }
+
+            remove
+            {
+                CommandManager.RequerySuggested -= value; 
+            }
+        }*/
     }
 }

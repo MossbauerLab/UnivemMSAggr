@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace MossbauerLab.UnivemMsAggr.GUI.Commands
 {
-    public class MoveItemUpCommand : ICommand
+    public class MoveItemCommand : ICommand
     {
         public void Execute(Object parameter)
         {
@@ -15,7 +15,8 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
 
         public Boolean CanExecute(Object parameter)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return true;
         }
 
         public event EventHandler CanExecuteChanged;
