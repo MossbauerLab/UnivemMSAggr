@@ -10,11 +10,16 @@
     </Window.DataContext>
     <Grid x:Name="MainGrid" Margin="40, 40, 40, 60">
         <WrapPanel ItemHeight="30" ItemWidth="30" Orientation="Horizontal">
-            <Button Content="{StaticResource AddItem}" Background="White" BorderThickness ="0" Margin="0, 0, 0, 0" Command="{Binding AddCommand}"/>
-            <Button Content="{StaticResource DeleteItem}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" Command="{Binding RemoveCommand}"/>
-            <Button Content="{StaticResource MoveItemUp}" Background="White" BorderThickness ="0"  Margin="2, 0, 0, 0" Command="{Binding MoveItemCommand}"/>
-            <Button Content="{StaticResource MoveItemDown}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" Command="{Binding MoveItemCommand}"/>
-            <Button Content="{StaticResource Run}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" Command="{Binding RunCommand}"/>
+            <Button Content="{StaticResource AddItem}" Background="White" BorderThickness ="0" Margin="0, 0, 0, 0" 
+                    Command="{Binding AddCommand}"/>
+            <Button Content="{StaticResource DeleteItem}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
+                    Command="{Binding RemoveCommand}" CommandParameter = "{Binding ElementName = CompFilesGrid, Path = SelectedIndex}"/>
+            <Button Content="{StaticResource MoveItemUp}" Background="White" BorderThickness ="0"  Margin="2, 0, 0, 0" 
+                    Command="{Binding MoveItemUpCommand}" CommandParameter = "{Binding ElementName = CompFilesGrid, Path = SelectedIndex}"/>
+            <Button Content="{StaticResource MoveItemDown}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
+                    Command="{Binding MoveItemDownCommand}" CommandParameter = "{Binding ElementName = CompFilesGrid, Path = SelectedIndex}"/>
+            <Button Content="{StaticResource Run}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
+                    Command="{Binding RunCommand}"/>
         </WrapPanel>
         <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" AutoGenerateColumns="True" HorizontalGridLinesBrush="White" 
                   AlternatingRowBackground="SandyBrown" Background="White" ItemsSource="{Binding UnivemMsSpectraCompFiles}">

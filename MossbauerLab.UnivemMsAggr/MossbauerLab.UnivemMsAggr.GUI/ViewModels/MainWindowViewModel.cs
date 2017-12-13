@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using MossbauerLab.UnivemMsAggr.GUI.Annotations;
@@ -12,23 +12,28 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
     {
         public MainWindowViewModel()
         {
-            UnivemMsSpectraCompFiles = new List<CompSelectionModel>();
+            UnivemMsSpectraCompFiles = new ObservableCollection<CompSelectionModel>();
             StubInit();
         }
 
         public ICommand AddCommand
         {
-            get { return new AddCompCommand(AddNewItemAction); }
+            get { return new AddCompCommand(AddItemAction); }
         }
 
         public ICommand RemoveCommand
         {
-            get { return new RemoveCompCommand(); }
+            get { return new RemoveCompCommand(RemoveItemAction); }
         }
 
-        public ICommand MoveItemCommand
+        public ICommand MoveItemUpCommand
         {
-            get { return new MoveItemCommand(); }
+            get { return new MoveItemCommand(MoveItemUpAction); }
+        }
+
+        public ICommand MoveItemDownCommand
+        {
+            get { return new MoveItemCommand(MoveItemDownAction); }
         }
 
         public ICommand RunCommand
@@ -36,7 +41,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             get { return new RunProcessingCommand(); }
         }
 
-        public IList<CompSelectionModel> UnivemMsSpectraCompFiles { get; set; }
+        public ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -46,9 +51,36 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void AddNewItemAction(CompSelectionModel compFile)
+        private void AddItemAction(CompSelectionModel compFile)
         {
             UnivemMsSpectraCompFiles.Add(compFile);
+        }
+
+        private void RemoveItemAction(Int32 index)
+        {
+            if (index >= 0 && index < UnivemMsSpectraCompFiles.Count)
+                UnivemMsSpectraCompFiles.RemoveAt(index);
+        }
+
+        // todo: umv: reduce code (repeating)
+        private void MoveItemUpAction(Int32 index)
+        {
+            if (index > 0 && index < UnivemMsSpectraCompFiles.Count)
+            {
+                CompSelectionModel item = UnivemMsSpectraCompFiles[index];
+                UnivemMsSpectraCompFiles.RemoveAt(index);
+                UnivemMsSpectraCompFiles.Insert(index - 1, item);
+            }
+        }
+
+        private void MoveItemDownAction(Int32 index)
+        {
+            if (index >= 0 && index < UnivemMsSpectraCompFiles.Count - 1)
+            {
+                CompSelectionModel item = UnivemMsSpectraCompFiles[index];
+                UnivemMsSpectraCompFiles.RemoveAt(index);
+                UnivemMsSpectraCompFiles.Insert(index + 1, item);
+            }
         }
 
         private void StubInit()

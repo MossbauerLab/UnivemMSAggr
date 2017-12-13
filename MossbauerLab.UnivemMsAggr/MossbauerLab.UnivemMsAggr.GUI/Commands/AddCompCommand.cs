@@ -16,7 +16,8 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
 
         public void Execute(Object parameter)
         {
-            CompSelectionModel compFile = parameter as CompSelectionModel;
+            CompSelectionModel compFile = new CompSelectionModel("NE", "someFile.txt");
+                //parameter as CompSelectionModel;
             if (compFile != null)
                 _handlerAction(compFile);
         }
@@ -26,19 +27,13 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
-        /*{
-            add
-            {
-                CommandManager.RequerySuggested += value; 
-            }
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
 
-            remove
-            {
-                CommandManager.RequerySuggested -= value; 
-            }
-        }*/
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
-        private Action<CompSelectionModel> _handlerAction;
+        private readonly Action<CompSelectionModel> _handlerAction;
     }
 }
