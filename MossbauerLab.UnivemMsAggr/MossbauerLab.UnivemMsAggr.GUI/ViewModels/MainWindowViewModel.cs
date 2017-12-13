@@ -42,6 +42,8 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
         }
 
         public ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles { get; set; }
+        public CompSelectionModel SelectedModel { get; set; }
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

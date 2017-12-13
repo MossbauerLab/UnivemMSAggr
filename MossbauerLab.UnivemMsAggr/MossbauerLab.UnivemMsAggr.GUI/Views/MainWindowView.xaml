@@ -22,7 +22,8 @@
                     Command="{Binding RunCommand}"/>
         </WrapPanel>
         <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" AutoGenerateColumns="True" HorizontalGridLinesBrush="White" 
-                  AlternatingRowBackground="SandyBrown" Background="White" ItemsSource="{Binding UnivemMsSpectraCompFiles}">
+                  AlternatingRowBackground="Wheat" Background="White" ItemsSource="{Binding UnivemMsSpectraCompFiles}"
+                  SelectedItem="{Binding SelectedModel, Mode=TwoWay}">
         </DataGrid>
     </Grid>
 </Window>
