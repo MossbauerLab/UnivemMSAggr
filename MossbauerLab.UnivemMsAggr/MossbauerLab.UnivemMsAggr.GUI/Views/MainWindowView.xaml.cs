@@ -14,14 +14,27 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
             InitializeComponent();
             DataContext = new MainWindowViewModel();
 
-            MoveUpButton.Click += OnItemMoveClick;
-            MoveDownButton.Click += OnItemMoveClick;
+            MoveUpButton.MouseMove += OnItemMoveMouseMove;
+            MoveDownButton.MouseMove += OnItemMoveMouseMove;
+            MoveUpButton.MouseLeftButtonUp += OnItemMoveClick;
+            MoveDownButton.MouseLeftButtonUp += OnItemMoveClick;
+        }
+
+        private void OnItemMoveMouseMove(Object sender, RoutedEventArgs args)
+        {
+            if (CompFilesGrid.SelectedIndex >= 0)
+                _selectedDataGridIndex = CompFilesGrid.SelectedIndex;
         }
 
         private void OnItemMoveClick(Object sender, RoutedEventArgs args)
         {
-            CompFilesGrid.Focus();
-            //CompFilesGrid.SelectedIndex = 1;
+            if (_selectedDataGridIndex >= 0)
+            {
+                CompFilesGrid.Focus();
+                CompFilesGrid.SelectedItem = CompFilesGrid.Items[_selectedDataGridIndex];
+            }
         }
+
+        private Int32 _selectedDataGridIndex;
     }
 }
