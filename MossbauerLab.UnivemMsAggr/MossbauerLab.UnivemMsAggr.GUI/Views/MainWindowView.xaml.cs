@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using MossbauerLab.UnivemMsAggr.GUI.ViewModels;
 
 namespace MossbauerLab.UnivemMsAggr.GUI.Views
@@ -12,6 +13,15 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
+
+            MoveUpButton.Click += OnItemMoveClick;
+            MoveDownButton.Click += OnItemMoveClick;
+        }
+
+        private void OnItemMoveClick(Object sender, RoutedEventArgs args)
+        {
+            CompFilesGrid.Focus();
+            //CompFilesGrid.SelectedIndex = 1;
         }
     }
 }

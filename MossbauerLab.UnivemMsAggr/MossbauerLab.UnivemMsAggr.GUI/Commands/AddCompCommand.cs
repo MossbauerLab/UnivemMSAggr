@@ -27,11 +27,13 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
             return true;
         }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
+        public event EventHandler CanExecuteChanged;
 
-            remove { CommandManager.RequerySuggested -= value; }
+        protected virtual void HandleCanExecuteChanged(Object sender, EventArgs args)
+        {
+            EventHandler handler = CanExecuteChanged;
+            if (handler != null)
+                handler(sender, args);
         }
 
         private readonly Action<CompSelectionModel> _handlerAction;

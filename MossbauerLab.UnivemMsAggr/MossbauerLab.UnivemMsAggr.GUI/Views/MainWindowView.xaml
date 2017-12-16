@@ -10,13 +10,13 @@
     </Window.DataContext>
     <Grid x:Name="MainGrid" Margin="40, 40, 40, 60">
         <WrapPanel ItemHeight="30" ItemWidth="30" Orientation="Horizontal">
-            <Button Content="{StaticResource AddItem}" Background="White" BorderThickness ="0" Margin="0, 0, 0, 0" 
+            <Button x:Name ="AddButton" Content="{StaticResource AddItem}" Background="White" BorderThickness ="0" Margin="0, 0, 0, 0" 
                     Command="{Binding AddCommand}"/>
-            <Button Content="{StaticResource DeleteItem}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
+            <Button x:Name ="RemoveButton" Content="{StaticResource DeleteItem}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
                     Command="{Binding RemoveCommand}" CommandParameter = "{Binding ElementName = CompFilesGrid, Path = SelectedIndex}"/>
-            <Button Content="{StaticResource MoveItemUp}" Background="White" BorderThickness ="0"  Margin="2, 0, 0, 0" 
+            <Button x:Name ="MoveUpButton" Content="{StaticResource MoveItemUp}" Background="White" BorderThickness ="0"  Margin="2, 0, 0, 0" 
                     Command="{Binding MoveItemUpCommand}" CommandParameter = "{Binding ElementName = CompFilesGrid, Path = SelectedIndex}"/>
-            <Button Content="{StaticResource MoveItemDown}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
+            <Button x:Name ="MoveDownButton" Content="{StaticResource MoveItemDown}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
                     Command="{Binding MoveItemDownCommand}" CommandParameter = "{Binding ElementName = CompFilesGrid, Path = SelectedIndex}"/>
             <Button Content="{StaticResource Run}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
                     Command="{Binding RunCommand}"/>
@@ -26,6 +26,17 @@
                       AlternatingRowBackground="Wheat" Background="White"
                       ItemsSource="{Binding UnivemMsSpectraCompFiles}"
                       SelectedItem="{Binding SelectedModel, Mode=TwoWay}">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="White"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="White"></Setter>
+                                <Setter Property="Foreground" Value="Blue"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
             </DataGrid>
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 20" Height="30">
