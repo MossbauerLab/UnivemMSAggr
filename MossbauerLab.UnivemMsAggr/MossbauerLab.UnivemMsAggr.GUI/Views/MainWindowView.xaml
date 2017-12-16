@@ -21,9 +21,21 @@
             <Button Content="{StaticResource Run}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
                     Command="{Binding RunCommand}"/>
         </WrapPanel>
-        <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" AutoGenerateColumns="True" HorizontalGridLinesBrush="White" 
-                  AlternatingRowBackground="Wheat" Background="White" ItemsSource="{Binding UnivemMsSpectraCompFiles}"
-                  SelectedItem="{Binding SelectedModel, Mode=TwoWay}">
-        </DataGrid>
+        <StackPanel Orientation="Vertical">
+            <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" AutoGenerateColumns="True" HorizontalGridLinesBrush="White" 
+                      AlternatingRowBackground="Wheat" Background="White"
+                      ItemsSource="{Binding UnivemMsSpectraCompFiles}"
+                      SelectedItem="{Binding SelectedModel, Mode=TwoWay}">
+            </DataGrid>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 20" Height="30">
+                        <TextBlock Margin="0, 0, 10, 0" VerticalAlignment="Center">Save to file:</TextBlock>
+                        <TextBox Width="425" VerticalAlignment="Center"> path to file</TextBox>
+                        <Button Background="White" BorderThickness ="0" Width="20" Height="20">...</Button>
+                    </StackPanel>
+                    <TextBlock>Processinf file: </TextBlock>
+                    <ProgressBar Height="25" Margin="0, 10, 0, 0" Background="Wheat"> </ProgressBar>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
