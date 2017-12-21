@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace MossbauerLab.UnivemMsAggr.GUI.Views
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for CompSelectView.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class CompSelectView
     {
-        public Window1()
+        public CompSelectView()
         {
             InitializeComponent();
         }

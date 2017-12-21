@@ -16,10 +16,10 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
 
         public void Execute(Object parameter)
         {
-            CompSelectionModel compFile = new CompSelectionModel("NE", "someFile.txt");
-                //parameter as CompSelectionModel;
-            if (compFile != null)
-                _handlerAction(compFile);
+            // CompSelectionModel compFile = new CompSelectionModel("NE", "someFile.txt");
+            // parameter as CompSelectionModel;
+            //if (compFile != null)
+                // _handlerAction(compFile);
         }
 
         public Boolean CanExecute(Object parameter)
