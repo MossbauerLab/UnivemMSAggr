@@ -58,8 +58,10 @@
     <Compile Include="Commands\RemoveCompCommand.cs" />
     <Compile Include="Commands\RunProcessingCommand.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModels\CompSelectViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Activators\ViewActivator.cs" />
+    <Compile Include="Views\Converters\CompSelectionConverter.cs" />
     <Compile Include="Views\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
@@ -111,6 +113,7 @@
     <Resource Include="img\run_30px.png" />
     <Resource Include="img\up_30px.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

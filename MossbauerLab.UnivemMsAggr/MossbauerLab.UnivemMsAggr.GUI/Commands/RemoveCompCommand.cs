@@ -25,8 +25,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
-
         protected virtual void HandleCanExecuteChanged(Object sender, EventArgs args)
         {
             EventHandler handler = CanExecuteChanged;
@@ -34,6 +32,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
                 handler(sender, args);
         }
 
+        public event EventHandler CanExecuteChanged;
         private readonly Action<Int32> _handlerAction;
     }
 }

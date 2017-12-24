@@ -16,11 +16,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             StubInit();
         }
 
-        public ICommand AddCommand
-        {
-            get { return new AddCompCommand(AddItemAction); }
-        }
-
         public ICommand RemoveCommand
         {
             get { return new RemoveCompCommand(RemoveItemAction); }
