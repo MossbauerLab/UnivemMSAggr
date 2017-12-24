@@ -4,14 +4,14 @@
         xmlns:models ="clr-namespace:MossbauerLab.UnivemMsAggr.GUI.Models"
         xmlns:viewModels ="clr-namespace:MossbauerLab.UnivemMsAggr.GUI.ViewModels"
         xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
-        Title="Univem MS Data Aggregator" Height="400" Width="600">
+        Title="Univem MS Data Aggregator" Height="400" Width="600"
+        ResizeMode="NoResize">
     <Window.DataContext>
         <viewModels:MainWindowViewModel />
     </Window.DataContext>
     <Grid x:Name="MainGrid" Margin="40, 40, 40, 60">
         <WrapPanel ItemHeight="30" ItemWidth="30" Orientation="Horizontal">
-            <Button x:Name ="AddButton" Content="{StaticResource AddItem}" Background="White" BorderThickness ="0" Margin="0, 0, 0, 0" 
-                    Command="{Binding AddCommand}"/>
+            <Button x:Name ="AddButton" Content="{StaticResource AddItem}" Background="White" BorderThickness ="0" Margin="0, 0, 0, 0" />
             <Button x:Name ="RemoveButton" Content="{StaticResource DeleteItem}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
                     Command="{Binding RemoveCommand}" CommandParameter = "{Binding ElementName = CompFilesGrid, Path = SelectedIndex}"/>
             <Button x:Name ="MoveUpButton" Content="{StaticResource MoveItemUp}" Background="White" BorderThickness ="0"  Margin="2, 0, 0, 0" 
