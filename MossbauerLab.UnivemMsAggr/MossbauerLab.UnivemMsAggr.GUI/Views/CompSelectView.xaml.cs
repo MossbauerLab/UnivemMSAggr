@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace MossbauerLab.UnivemMsAggr.GUI.Views
 {
@@ -21,6 +22,19 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
         public CompSelectView()
         {
             InitializeComponent();
+
+            SelectCompFileButton.Click += OnSelectCompFileClick;
+        }
+
+        private void OnSelectCompFileClick(Object sender, RoutedEventArgs args)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            Boolean? result = dialog.ShowDialog();
+            if (result.HasValue && result.Value)
+            {
+                CompFileBox.Text = dialog.FileName;
+            }
+
         }
     }
 }
