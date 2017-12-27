@@ -5,10 +5,11 @@ using System.Windows.Input;
 using MossbauerLab.UnivemMsAggr.GUI.Annotations;
 using MossbauerLab.UnivemMsAggr.GUI.Commands;
 using MossbauerLab.UnivemMsAggr.GUI.Models;
+using MossbauerLab.UnivemMsAggr.GUI.Utils;
 
 namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged, IMessageRecipient<CompSelectionModel>
     {
         public MainWindowViewModel()
         {
@@ -16,30 +17,11 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             StubInit();
         }
 
-        public ICommand RemoveCommand
+        public void TransferMessage(CompSelectionModel message)
         {
-            get { return new RemoveCompCommand(RemoveItemAction); }
+            if(message != null)
+                AddItemAction(message);
         }
-
-        public ICommand MoveItemUpCommand
-        {
-            get { return new MoveItemCommand(MoveItemUpAction); }
-        }
-
-        public ICommand MoveItemDownCommand
-        {
-            get { return new MoveItemCommand(MoveItemDownAction); }
-        }
-
-        public ICommand RunCommand
-        {
-            get { return new RunProcessingCommand(); }
-        }
-
-        public ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles { get; set; }
-        public CompSelectionModel SelectedModel { get; set; }
-        
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(String propertyName)
@@ -87,5 +69,30 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             UnivemMsSpectraCompFiles.Add(new CompSelectionModel("NC", "nc_11s2_comp.txt"));
             UnivemMsSpectraCompFiles.Add(new CompSelectionModel("ND", "nd_11s3_comp.txt"));
         }
+
+        public ICommand RemoveCommand
+        {
+            get { return new RemoveCompCommand(RemoveItemAction); }
+        }
+
+        public ICommand MoveItemUpCommand
+        {
+            get { return new MoveItemCommand(MoveItemUpAction); }
+        }
+
+        public ICommand MoveItemDownCommand
+        {
+            get { return new MoveItemCommand(MoveItemDownAction); }
+        }
+
+        public ICommand RunCommand
+        {
+            get { return new RunProcessingCommand(); }
+        }
+
+        public ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles { get; set; }
+        public CompSelectionModel SelectedModel { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
