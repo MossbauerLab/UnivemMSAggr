@@ -29,6 +29,11 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
         private void OnSelectCompFileClick(Object sender, RoutedEventArgs args)
         {
             OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Title = "Select Univem MS components file";
+            dialog.RestoreDirectory = true;
+            dialog.AddExtension = true;
+            dialog.Filter = "Components file (.txt)|*.txt| All files (*.*)| *.*";
+            dialog.FilterIndex = 0;
             Boolean? result = dialog.ShowDialog();
             if (result.HasValue && result.Value)
             {
