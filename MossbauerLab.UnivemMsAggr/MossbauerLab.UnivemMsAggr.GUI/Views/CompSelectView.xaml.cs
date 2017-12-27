@@ -1,15 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Microsoft.Win32;
 
 namespace MossbauerLab.UnivemMsAggr.GUI.Views
@@ -24,6 +14,8 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
             InitializeComponent();
 
             SelectCompFileButton.Click += OnSelectCompFileClick;
+            CancelButton.Click += OnCancelButtonClick;
+            AddCompButton.PreviewMouseLeftButtonUp += OnAddButtonMouseUp;
         }
 
         private void OnSelectCompFileClick(Object sender, RoutedEventArgs args)
@@ -40,6 +32,16 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
                 CompFileBox.Text = dialog.FileName;
             }
 
+        }
+
+        private void OnCancelButtonClick(Object sender, RoutedEventArgs args)
+        {
+            Close();
+        }
+
+        private void OnAddButtonMouseUp(Object sender, RoutedEventArgs args)
+        {
+            Close();
         }
     }
 }

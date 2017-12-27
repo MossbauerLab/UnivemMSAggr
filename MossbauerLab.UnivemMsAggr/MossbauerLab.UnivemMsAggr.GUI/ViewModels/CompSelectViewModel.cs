@@ -23,7 +23,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
 
         private void AddItemAction(CompSelectionModel compFile)
         {
-
+            GlobalDefs.ViewModelsMediator.Send(compFile, GlobalDefs.MainWindowdViewModelId);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

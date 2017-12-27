@@ -20,6 +20,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels.Utils
             if (!_participants.ContainsKey(id))
                 return false;
             _participants[id].TransferMessage(message);
+            return true;
         }
 
         private readonly IDictionary<Guid, IMessageRecipient<CompSelectionModel>> _participants = new Dictionary<Guid, IMessageRecipient<CompSelectionModel>>();

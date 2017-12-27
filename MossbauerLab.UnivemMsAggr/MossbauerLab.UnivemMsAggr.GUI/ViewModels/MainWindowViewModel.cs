@@ -14,6 +14,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
         public MainWindowViewModel()
         {
             UnivemMsSpectraCompFiles = new ObservableCollection<CompSelectionModel>();
+            GlobalDefs.ViewModelsMediator.AddParticipant(GlobalDefs.MainWindowdViewModelId, this);
             StubInit();
         }
 
