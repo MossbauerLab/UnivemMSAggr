@@ -1,4 +1,5 @@
 ﻿<Window x:Class="MossbauerLab.UnivemMsAggr.GUI.Views.CompSelectView"
+        x:Name="ThisWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels ="clr-namespace:MossbauerLab.UnivemMsAggr.GUI.ViewModels"
@@ -30,7 +31,7 @@
                         <MultiBinding Converter="{StaticResource CompConverter}">
                             <Binding Path="Text" ElementName="SampleNameBox"></Binding>
                             <Binding Path="Text" ElementName="CompFileBox"></Binding>
-                            <Binding Path="" ElementName="W"></Binding>
+                            <Binding ElementName="ThisWindow"></Binding>
                         </MultiBinding>
                     </Button.CommandParameter>
                 </Button>

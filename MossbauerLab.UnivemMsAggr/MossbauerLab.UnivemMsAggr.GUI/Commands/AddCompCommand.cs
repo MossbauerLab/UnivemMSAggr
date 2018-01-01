@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Windows;
 using System.Windows.Input;
 using MossbauerLab.UnivemMsAggr.GUI.Models;
 
@@ -7,7 +8,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
 {
     public class AddCompCommand : ICommand
     {
-        public AddCompCommand(Action<CompSelectionModel> handlerAction)
+        public AddCompCommand(Action<CompSelectionModel, Window> handlerAction)
         {
             if (handlerAction == null)
                 throw new ArgumentNullException("handlerAction");
@@ -19,10 +20,10 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
             try
             {
                 Object[] fields = parameter as Object[];
-                if (fields == null || fields.Length != 2)
+                if (fields == null || fields.Length != 3)
                     return;
                 CompSelectionModel compFile = new CompSelectionModel((fields[0] as String) ?? "S#1" , fields[1] as String);
-                _handlerAction(compFile);
+                _handlerAction(compFile, fields[2] as Window);
             }
             catch (Exception) { }
         }
@@ -41,6 +42,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Commands
                 handler(sender, args);
         }
 
-        private readonly Action<CompSelectionModel> _handlerAction;
+        private readonly Action<CompSelectionModel, Window> _handlerAction;
     }
 }

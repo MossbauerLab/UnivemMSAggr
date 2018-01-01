@@ -39,9 +39,9 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
             Close();
         }
 
-        private void OnAddButtonMouseUp(Object sender, RoutedEventArgs args)
+/*        private void OnAddButtonMouseUp(Object sender, RoutedEventArgs args)
         {
             Close();
-        }
+        }*/
     }
 }
