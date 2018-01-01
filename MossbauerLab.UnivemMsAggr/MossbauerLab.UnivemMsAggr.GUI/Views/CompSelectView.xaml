@@ -30,6 +30,7 @@
                         <MultiBinding Converter="{StaticResource CompConverter}">
                             <Binding Path="Text" ElementName="SampleNameBox"></Binding>
                             <Binding Path="Text" ElementName="CompFileBox"></Binding>
+                            <Binding Path="" ElementName="W"></Binding>
                         </MultiBinding>
                     </Button.CommandParameter>
                 </Button>

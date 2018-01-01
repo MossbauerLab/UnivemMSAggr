@@ -13,7 +13,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
     {
         public MainWindowViewModel()
         {
-            UnivemMsSpectraCompFiles = new ObservableCollection<CompSelectionModel>();
+            //UnivemMsSpectraCompFiles = new ObservableCollection<CompSelectionModel>();
             GlobalDefs.ViewModelsMediator.AddParticipant(GlobalDefs.MainWindowdViewModelId, this);
             StubInit();
         }
@@ -28,12 +28,14 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
         protected virtual void OnPropertyChanged(String propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            if (handler != null) 
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void AddItemAction(CompSelectionModel compFile)
         {
             UnivemMsSpectraCompFiles.Add(compFile);
+            OnPropertyChanged("UnivemMsSpectraCompFiles");
         }
 
         private void RemoveItemAction(Int32 index)
@@ -91,9 +93,14 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             get { return new RunProcessingCommand(); }
         }
 
-        public ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles { get; set; }
+        public ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles
+        {
+            get { return _univemMsSpectraCompFiles; }
+            set { _univemMsSpectraCompFiles = value; OnPropertyChanged("UnivemMsSpectraCompFiles");}
+        }
         public CompSelectionModel SelectedModel { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        private ObservableCollection<CompSelectionModel> _univemMsSpectraCompFiles  = new ObservableCollection<CompSelectionModel>();
     }
 }

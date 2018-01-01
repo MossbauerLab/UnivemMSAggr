@@ -9,5 +9,10 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views.Activators
             T view = new T();
             view.Show();
         }
+
+        public static void Deactivate(Window window)
+        {
+            window.Close();
+        }
     }
 }

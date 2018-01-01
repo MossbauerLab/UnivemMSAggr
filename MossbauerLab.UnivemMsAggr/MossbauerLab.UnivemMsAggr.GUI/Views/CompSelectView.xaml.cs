@@ -15,7 +15,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
 
             SelectCompFileButton.Click += OnSelectCompFileClick;
             CancelButton.Click += OnCancelButtonClick;
-            AddCompButton.PreviewMouseLeftButtonUp += OnAddButtonMouseUp;
+            //AddCompButton.PreviewMouseLeftButtonUp += OnAddButtonMouseUp;
         }
 
         private void OnSelectCompFileClick(Object sender, RoutedEventArgs args)

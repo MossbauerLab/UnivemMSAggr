@@ -8,12 +8,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
 {
     public class CompSelectViewModel : INotifyPropertyChanged
     {
-
-        public ICommand AddCommand
-        {
-            get { return new AddCompCommand(AddItemAction); }
-        }
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -24,6 +18,11 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
         private void AddItemAction(CompSelectionModel compFile)
         {
             GlobalDefs.ViewModelsMediator.Send(compFile, GlobalDefs.MainWindowdViewModelId);
+        }
+
+        public ICommand AddCommand
+        {
+            get { return new AddCompCommand(AddItemAction); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
