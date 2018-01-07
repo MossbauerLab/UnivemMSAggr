@@ -24,8 +24,7 @@
         <StackPanel Orientation="Vertical">
             <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" AutoGenerateColumns="True" HorizontalGridLinesBrush="White" 
                       AlternatingRowBackground="Wheat" Background="White"
-                      ItemsSource="{Binding UnivemMsSpectraCompFiles, Mode = TwoWay}"
-                      SelectedItem="{Binding SelectedModel, Mode=TwoWay}">
+                      ItemsSource="{Binding UnivemMsSpectraCompFiles}">
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
                         <Setter Property="Background" Value="White"></Setter>

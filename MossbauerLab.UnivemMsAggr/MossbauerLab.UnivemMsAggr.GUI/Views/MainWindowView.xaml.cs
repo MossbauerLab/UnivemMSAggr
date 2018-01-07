@@ -16,10 +16,10 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
             
             DataContext = new MainWindowViewModel();
             AddButton.Click += OnAddItemClick;
-            MoveUpButton.MouseMove += OnItemMoveMouseMove;
-            MoveDownButton.MouseMove += OnItemMoveMouseMove;
-            MoveUpButton.MouseLeftButtonUp += OnItemMoveClick;
-            MoveDownButton.MouseLeftButtonUp += OnItemMoveClick;
+            //MoveUpButton.MouseMove += OnItemMoveMouseMove;
+            //MoveDownButton.MouseMove += OnItemMoveMouseMove;
+            //MoveUpButton.MouseLeftButtonUp += OnItemMoveClick;
+            //MoveDownButton.MouseLeftButtonUp += OnItemMoveClick;
         }
 
         private void OnAddItemClick(Object sender, RoutedEventArgs args)
@@ -27,7 +27,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
             ViewActivator.Activate<CompSelectView>();
         }
 
-        private void OnItemMoveMouseMove(Object sender, RoutedEventArgs args)
+/*        private void OnItemMoveMouseMove(Object sender, RoutedEventArgs args)
         {
             if (CompFilesGrid.SelectedIndex >= 0)
                 _selectedDataGridIndex = CompFilesGrid.SelectedIndex;
@@ -40,8 +40,8 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Views
                 CompFilesGrid.Focus();
                 CompFilesGrid.SelectedItem = CompFilesGrid.Items[_selectedDataGridIndex];
             }
-        }
+        }*/
 
-        private Int32 _selectedDataGridIndex;
+        //private Int32 _selectedDataGridIndex;
     }
 }

@@ -13,9 +13,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
     {
         public MainWindowViewModel()
         {
-            //UnivemMsSpectraCompFiles = new ObservableCollection<CompSelectionModel>();
             GlobalDefs.ViewModelsMediator.AddParticipant(GlobalDefs.MainWindowdViewModelId, this);
-            StubInit();
         }
 
         public void TransferMessage(CompSelectionModel message)
@@ -35,7 +33,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
         private void AddItemAction(CompSelectionModel compFile)
         {
             UnivemMsSpectraCompFiles.Add(compFile);
-            OnPropertyChanged("UnivemMsSpectraCompFiles");
         }
 
         private void RemoveItemAction(Int32 index)
@@ -65,14 +62,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             }
         }
 
-        private void StubInit()
-        {
-            UnivemMsSpectraCompFiles.Add(new CompSelectionModel("NA", "na_11s2_comp.txt"));
-            UnivemMsSpectraCompFiles.Add(new CompSelectionModel("NB", "nb_11s1_comp.txt"));
-            UnivemMsSpectraCompFiles.Add(new CompSelectionModel("NC", "nc_11s2_comp.txt"));
-            UnivemMsSpectraCompFiles.Add(new CompSelectionModel("ND", "nd_11s3_comp.txt"));
-        }
-
         public ICommand RemoveCommand
         {
             get { return new RemoveCompCommand(RemoveItemAction); }
@@ -93,14 +82,15 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             get { return new RunProcessingCommand(); }
         }
 
-        public ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles
+        public static ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles
         {
             get { return _univemMsSpectraCompFiles; }
-            set { _univemMsSpectraCompFiles = value; OnPropertyChanged("UnivemMsSpectraCompFiles");}
+            set { _univemMsSpectraCompFiles = value; }
         }
-        public CompSelectionModel SelectedModel { get; set; }
+        
+        //public CompSelectionModel SelectedModel { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private ObservableCollection<CompSelectionModel> _univemMsSpectraCompFiles  = new ObservableCollection<CompSelectionModel>();
+        private static ObservableCollection<CompSelectionModel> _univemMsSpectraCompFiles  = new ObservableCollection<CompSelectionModel>();
     }
 }
