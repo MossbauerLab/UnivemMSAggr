@@ -67,6 +67,7 @@
     <Compile Include="ViewModels\Utils\ViewModelsMediator.cs" />
     <Compile Include="Views\Activators\ViewActivator.cs" />
     <Compile Include="Views\Converters\CompSelectionConverter.cs" />
+    <Compile Include="Views\Extension\EnvironmentVariableMarkupExtension.cs" />
     <Compile Include="Views\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>

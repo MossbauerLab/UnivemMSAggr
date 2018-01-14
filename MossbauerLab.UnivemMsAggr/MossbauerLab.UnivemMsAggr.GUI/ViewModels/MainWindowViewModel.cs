@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Input;
 using MossbauerLab.UnivemMsAggr.GUI.Annotations;
 using MossbauerLab.UnivemMsAggr.GUI.Commands;
@@ -63,6 +62,11 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             }
         }
 
+        private void RunAction()
+        {
+            // todo : execute here, notify UI via Binding 
+        }
+
         public ICommand RemoveCommand
         {
             get { return new RemoveCompCommand(RemoveItemAction); }
@@ -80,7 +84,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
 
         public ICommand RunCommand
         {
-            get { return new RunProcessingCommand(); }
+            get { return new RunProcessingCommand(RunAction); }
         }
 
         public static ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles
