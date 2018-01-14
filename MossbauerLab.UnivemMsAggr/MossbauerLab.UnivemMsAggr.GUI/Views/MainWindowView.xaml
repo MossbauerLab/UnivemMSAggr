@@ -22,30 +22,52 @@
                     Command="{Binding RunCommand}"/>
         </WrapPanel>
         <StackPanel Orientation="Vertical">
-            <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" MinHeight="120"
-                      AutoGenerateColumns="True" 
-                      HorizontalGridLinesBrush="White" AlternatingRowBackground="Wheat" Background="White"
+            <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" Height="120" 
+                      AutoGenerateColumns="False" 
+                      HorizontalGridLinesBrush="Black" VerticalGridLinesBrush="Black"
+                      AlternatingRowBackground="Wheat" Background="White"
                       ItemsSource="{Binding UnivemMsSpectraCompFiles}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="    Sample name" Binding="{Binding SampleName}" Width="0.5*" />
+                    <DataGridTextColumn Header="    Univem MS components file" Binding="{Binding SpectrumComponentFile}" Width="*"/>
+                </DataGrid.Columns>
+                <DataGrid.Style>
+                    <Style TargetType="{x:Type DataGrid}">
+                        <Setter Property="RowHeaderWidth" Value="0"/>
+                        <Setter Property="GridLinesVisibility" Value="All"/>
+                    </Style>
+                </DataGrid.Style>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="Height" Value="25"/>
+                        <Setter Property="Background" Value="LightSkyBlue"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="BorderThickness" Value="0, 1, 1, 1"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
                 <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Setter Property="Background" Value="White"></Setter>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Background" Value="White"/>
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="White"></Setter>
-                                <Setter Property="Foreground" Value="Blue"></Setter>
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="Blue"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
             </DataGrid>
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 20" Height="30">
-                        <TextBlock Margin="0, 0, 10, 0" VerticalAlignment="Center">Save to file:</TextBlock>
-                        <TextBox Width="425" VerticalAlignment="Center"> path to file</TextBox>
-                        <Button Background="White" BorderThickness ="0" Width="20" Height="20">...</Button>
-                    </StackPanel>
-                    <TextBlock>Processinf file: </TextBlock>
-                    <ProgressBar Height="25" Margin="0, 10, 0, 0" Background="Wheat"> </ProgressBar>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 20" Height="30">
+                    <TextBlock Margin="0, 0, 10, 0" VerticalAlignment="Center"><Run Text="Save to file:"/></TextBlock>
+                    <TextBox Width="425" VerticalAlignment="Center" Text="path to file"/>
+                    <Button Background="White" BorderThickness ="0" Width="20" Height="20" Content="..."/>
+                </StackPanel>
+                <TextBlock><Run Text="Processinf file:"/></TextBlock>
+                <ProgressBar Height="25" Margin="0, 10, 0, 0" Background="Wheat"/>
             </StackPanel>
         </StackPanel>
     </Grid>
