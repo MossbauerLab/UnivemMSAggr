@@ -22,8 +22,9 @@
                     Command="{Binding RunCommand}"/>
         </WrapPanel>
         <StackPanel Orientation="Vertical">
-            <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" AutoGenerateColumns="True" HorizontalGridLinesBrush="White" 
-                      AlternatingRowBackground="Wheat" Background="White"
+            <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" MinHeight="120"
+                      AutoGenerateColumns="True" 
+                      HorizontalGridLinesBrush="White" AlternatingRowBackground="Wheat" Background="White"
                       ItemsSource="{Binding UnivemMsSpectraCompFiles}">
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
