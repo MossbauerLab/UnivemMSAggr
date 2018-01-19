@@ -1,0 +1,75 @@
+﻿<Window x:Class="MossbauerLab.UnivemMsAggr.GUI.Views.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models ="clr-namespace:MossbauerLab.UnivemMsAggr.GUI.Models"
+        xmlns:viewModels ="clr-namespace:MossbauerLab.UnivemMsAggr.GUI.ViewModels"
+        xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
+        xmlns:viewExtension="clr-namespace:MossbauerLab.UnivemMsAggr.GUI.Views.Extension"
+        Title="Univem MS Data Aggregator" Height="400" Width="600"
+        ResizeMode="NoResize">
+    <Window.DataContext>
+        <viewModels:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid x:Name="MainGrid" Margin="40, 40, 40, 60">
+        <WrapPanel ItemHeight="30" ItemWidth="30" Orientation="Horizontal">
+            <Button x:Name ="AddButton" Content="{StaticResource AddItem}" Background="White" BorderThickness ="0" Margin="0, 0, 0, 0" />
+            <Button x:Name ="RemoveButton" Content="{StaticResource DeleteItem}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
+                    Command="{Binding RemoveCommand}" CommandParameter = "{Binding ElementName = CompFilesGrid, Path = SelectedIndex}"/>
+            <Button x:Name ="MoveUpButton" Content="{StaticResource MoveItemUp}" Background="White" BorderThickness ="0"  Margin="2, 0, 0, 0" 
+                    Command="{Binding MoveItemUpCommand}" CommandParameter = "{Binding ElementName = CompFilesGrid, Path = SelectedIndex}"/>
+            <Button x:Name ="MoveDownButton" Content="{StaticResource MoveItemDown}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
+                    Command="{Binding MoveItemDownCommand}" CommandParameter = "{Binding ElementName = CompFilesGrid, Path = SelectedIndex}"/>
+            <Button Content="{StaticResource Run}" Background="White" BorderThickness ="0" Margin="2, 0, 0, 0" 
+                    Command="{Binding RunCommand}"/>
+        </WrapPanel>
+        <StackPanel Orientation="Vertical">
+            <DataGrid x:Name="CompFilesGrid" Margin="0, 35, 0, 0" Height="120" 
+                      AutoGenerateColumns="False" 
+                      HorizontalGridLinesBrush="Black" VerticalGridLinesBrush="Black"
+                      AlternatingRowBackground="Wheat" Background="White"
+                      ItemsSource="{Binding UnivemMsSpectraCompFiles}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="    Sample name" Binding="{Binding SampleName}" Width="0.5*" />
+                    <DataGridTextColumn Header="    Univem MS components file" Binding="{Binding SpectrumComponentFile}" Width="*"/>
+                </DataGrid.Columns>
+                <DataGrid.Style>
+                    <Style TargetType="{x:Type DataGrid}">
+                        <Setter Property="RowHeaderWidth" Value="0"/>
+                        <Setter Property="GridLinesVisibility" Value="All"/>
+                    </Style>
+                </DataGrid.Style>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="Height" Value="25"/>
+                        <Setter Property="Background" Value="LightSkyBlue"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="BorderThickness" Value="0, 1, 1, 1"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Background" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="Blue"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+            </DataGrid>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 20" Height="30">
+                    <TextBlock Margin="0, 0, 10, 0" VerticalAlignment="Center"><Run Text="Save to file:"/></TextBlock>
+                    <TextBox Width="425" VerticalAlignment="Center" Text="{Binding OutputFile}"/>
+                    <Button Background="White" BorderThickness ="0" Width="20" Height="20" Content="..."/>
+                </StackPanel>
+                <TextBlock><Run Text="Processinf file:"/></TextBlock>
+                <ProgressBar Height="25" Margin="0, 10, 0, 0" Background="Wheat"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

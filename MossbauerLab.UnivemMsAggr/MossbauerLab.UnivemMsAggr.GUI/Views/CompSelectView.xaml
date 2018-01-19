@@ -1,0 +1,42 @@
+﻿<Window x:Class="MossbauerLab.UnivemMsAggr.GUI.Views.CompSelectView"
+        x:Name="ThisWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels ="clr-namespace:MossbauerLab.UnivemMsAggr.GUI.ViewModels"
+        xmlns:converters ="clr-namespace:MossbauerLab.UnivemMsAggr.GUI.Views.Converters"
+        Title="Add Univem MS components file" Height="140" Width="400"
+        ResizeMode="NoResize"
+        Topmost="True">
+    <Window.Resources>
+        <converters:CompSelectionConverter x:Key="CompConverter"></converters:CompSelectionConverter>
+    </Window.Resources>
+    <Window.DataContext>
+        <viewModels:CompSelectViewModel/>
+    </Window.DataContext>
+    <Grid Margin="20, 20, 0, 0">
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Label>Sample name: </Label>
+                <TextBox Width="270" x:Name="SampleNameBox"> </TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0 ,10 , 0, 0">
+                <Label>Univem MS component file:</Label>
+                <TextBox Width="180" x:Name="CompFileBox"></TextBox>
+                <Button x:Name="SelectCompFileButton" Background="White" Width="24">...</Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="150 ,10 , 0, 0">
+                <Button x:Name="AddCompButton" Background="White" Command="{Binding AddCommand}">
+                    Add
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource CompConverter}">
+                            <Binding Path="Text" ElementName="SampleNameBox"></Binding>
+                            <Binding Path="Text" ElementName="CompFileBox"></Binding>
+                            <Binding ElementName="ThisWindow"></Binding>
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
+                <Button x:Name="CancelButton" Background="White" Margin ="10, 0, 0, 0">Cancel</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
