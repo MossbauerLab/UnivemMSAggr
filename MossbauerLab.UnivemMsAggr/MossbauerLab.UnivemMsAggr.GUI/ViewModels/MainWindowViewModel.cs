@@ -14,6 +14,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
         public MainWindowViewModel()
         {
             GlobalDefs.ViewModelsMediator.AddParticipant(GlobalDefs.MainWindowdViewModelId, this);
+            OutputFile = String.Format(@"{0}\report.docx", Environment.GetEnvironmentVariable("SystemDrive"));
         }
 
         public void TransferMessage(CompSelectionModel message)
@@ -86,6 +87,8 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
         {
             get { return new RunProcessingCommand(RunAction); }
         }
+
+        public String OutputFile { get; set; }
 
         public static ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles
         {

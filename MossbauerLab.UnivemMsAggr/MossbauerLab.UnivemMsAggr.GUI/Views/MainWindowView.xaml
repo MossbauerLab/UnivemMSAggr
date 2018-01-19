@@ -64,7 +64,7 @@
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 20" Height="30">
                     <TextBlock Margin="0, 0, 10, 0" VerticalAlignment="Center"><Run Text="Save to file:"/></TextBlock>
-                    <TextBox Width="425" VerticalAlignment="Center" Text="{viewExtension:EnvironmentVariableMarkupExtension SystemDrive}"/>
+                    <TextBox Width="425" VerticalAlignment="Center" Text="{Binding OutputFile}"/>
                     <Button Background="White" BorderThickness ="0" Width="20" Height="20" Content="..."/>
                 </StackPanel>
                 <TextBlock><Run Text="Processinf file:"/></TextBlock>
