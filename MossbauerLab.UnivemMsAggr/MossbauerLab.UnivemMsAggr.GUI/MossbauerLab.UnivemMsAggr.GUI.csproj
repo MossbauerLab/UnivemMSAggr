@@ -119,7 +119,12 @@
     <Resource Include="img\run_30px.png" />
     <Resource Include="img\up_30px.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MossbauerLab.UnivemMsAggr.Core\MossbauerLab.UnivemMsAggr.Core.csproj">
+      <Project>{d15859c0-9da6-4fa0-857f-f2242a080ad4}</Project>
+      <Name>MossbauerLab.UnivemMsAggr.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
