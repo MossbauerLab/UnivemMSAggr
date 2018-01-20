@@ -146,6 +146,15 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             builder.Append(spacing);
         }
 
+        protected virtual void SpectrumFitProcessedHandler(String processedFit)
+        {
+            EventHandler<ProcessedSpectrumFitEventArgs> handler = SpectrumFitProcessed;
+            if (handler != null)
+                handler(this, new ProcessedSpectrumFitEventArgs(processedFit));
+        }
+
+        public event EventHandler<ProcessedSpectrumFitEventArgs> SpectrumFitProcessed;
+
         private const String TableHeaderMixCompEn = "Sample\t\tΓ, mm/s\t\tδ, mm/s\t\t2έ, mm/s\tHeff, kOe\tA, %\t\tχ2\tComponent";
         private const String TableHeaderDoubletsOnlyEn = "Sample\t\tΓ, mm/s\t\tδ, mm/s\t\t2έ, mm/s\tA, %\t\tχ2\tComponent";
 

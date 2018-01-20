@@ -265,6 +265,15 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             }
         }
 
+        protected virtual void SpectrumFitProcessedHandler(String processedFit)
+        {
+            EventHandler<ProcessedSpectrumFitEventArgs> handler = SpectrumFitProcessed;
+            if (handler != null)
+                handler(this, new ProcessedSpectrumFitEventArgs(processedFit));
+        }
+
+        public event EventHandler<ProcessedSpectrumFitEventArgs> SpectrumFitProcessed;
+
         private const Int32 LineWidthSextetIndex = 2;
         private const Int32 IsomerShiftSextetIndex = 3;
         private const Int32 QuadrupolSplittingSextetIndex = 4;

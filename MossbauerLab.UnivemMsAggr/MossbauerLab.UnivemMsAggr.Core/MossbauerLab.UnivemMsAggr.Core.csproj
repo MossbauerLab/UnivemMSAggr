@@ -44,6 +44,7 @@
     <Compile Include="Data\SpectralComponents\Doublet.cs" />
     <Compile Include="Data\SpectralComponents\Sextet.cs" />
     <Compile Include="Data\SpectrumFit.cs" />
+    <Compile Include="Export\ProcessedSpectrumFitEventArgs.cs" />
     <Compile Include="Export\ISpectrumFitExport.cs" />
     <Compile Include="Export\SpectrumFitToMsWord.cs" />
     <Compile Include="Export\SpectrumFitToTextExport.cs" />

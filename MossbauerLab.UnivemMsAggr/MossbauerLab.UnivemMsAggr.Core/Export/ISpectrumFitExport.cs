@@ -8,5 +8,6 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
     {
         Boolean Export(String destination, SpectrumFit data);
         Boolean Export(String destination, IList<SpectrumFit> data);
+        event EventHandler<ProcessedSpectrumFitEventArgs> SpectrumFitProcessed;
     }
 }
