@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using MossbauerLab.UnivemMsAggr.Core.Data;
 using MossbauerLab.UnivemMsAggr.Core.Export;
@@ -19,7 +21,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
         {
             GlobalDefs.ViewModelsMediator.AddParticipant(GlobalDefs.MainWindowdViewModelId, this);
             OutputFile = String.Format(@"{0}\report.docx", Environment.GetEnvironmentVariable("SystemDrive"));
-            ProgressValue = 0;
             _spectrumFitsCount = 0;
             _exportService.SpectrumFitProcessed += OnSpectrumProcessed;
         }
@@ -74,18 +75,26 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
         {
             ProgressValue = 0;
             _spectrumFitsCount = 0;
-            _exportService.Export(OutputFile, UnivemMsSpectraCompFiles.Select(item =>
+            Task.Factory.StartNew(() =>
             {
-                SpectrumFit fit = CompProcessor.Process(item.SpectrumComponentFile);
-                fit.SampleName = item.SampleName;
-                return fit;
-            }).ToList());
+                _exportService.Export(OutputFile, UnivemMsSpectraCompFiles.Select(item =>
+                {
+                    SpectrumFit fit = CompProcessor.Process(item.SpectrumComponentFile);
+                    fit.SampleName = item.SampleName;
+                    return fit;
+                }).ToList());
+            });
         }
 
         private void OnSpectrumProcessed(Object sender, ProcessedSpectrumFitEventArgs args)
         {
-            _spectrumFitsCount++;
-            ProgressValue = Decimal.Round(100.0m*(_spectrumFitsCount/(Decimal)UnivemMsSpectraCompFiles.Count), 2);
+            Task.Factory.StartNew(() =>
+            {
+                _spectrumFitsCount++;
+                _progressValue = Decimal.Round(100.0m*((Decimal) _spectrumFitsCount/UnivemMsSpectraCompFiles.Count));
+                Thread.Sleep(200);
+                OnPropertyChanged("ProgressValue");
+            });
         }
 
         public ICommand RemoveCommand
@@ -110,7 +119,11 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
 
         public String OutputFile { get; set; }
 
-        public Decimal ProgressValue { get; set; }
+        public Decimal ProgressValue
+        {
+            get { return _progressValue; }
+            set { _progressValue = value; }
+        }
 
         public static ObservableCollection<CompSelectionModel> UnivemMsSpectraCompFiles
         {
@@ -122,6 +135,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
         private static ObservableCollection<CompSelectionModel> _univemMsSpectraCompFiles  = new ObservableCollection<CompSelectionModel>();
+        private Decimal _progressValue;
 
         private readonly ISpectrumFitExport _exportService = new SpectrumFitToMsWord();
         private Int32 _spectrumFitsCount = 0;
