@@ -57,6 +57,8 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.Export
         [Test]
         public void TestExportManyFits()
         {
+            int numberOfProcessedFits = 0;
+            _exportService.SpectrumFitProcessed += (sender, args) => { numberOfProcessedFits++; };
             SpectrumFit fit1 = CompProcessor.Process(NickelFerriteNaCompFile);
             fit1.SampleName = "SAMP#1";
             SpectrumFit fit2 = CompProcessor.Process(NickelFerriteNbCompFile);
@@ -67,6 +69,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Tests.Export
             fit4.SampleName = "SAMP#4";
             Boolean result = _exportService.Export(OutFile, new[] { fit1, fit2, fit3, fit4 });
             Assert.IsTrue(result, "check if result is true");
+            Assert.AreEqual(4, numberOfProcessedFits, "Checking that events are propery rising");
         }
 
         private const String NickelFerriteNaCompFile = @"..\..\CompFilesExamples\Indian.NiFe2.O4-NA-2-4096_comp.10s-2017-3.txt";
