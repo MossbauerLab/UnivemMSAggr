@@ -32,6 +32,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 Table componentsTable = CreateDocTable(rows, columns);
                 CreateTableHeader(componentsTable, !doubletsOnly);
                 Boolean result = ExportFitImpl(data, componentsTable, !doubletsOnly, 2, columns);
+                SpectrumFitProcessedHandler(data.FileName);
                 AddRemark();
                 _msWordDocument.SaveAs(Path.GetFullPath(destination));
                 _msWordDocument.Close();
@@ -69,6 +70,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
 
                     result &= ExportFitImpl(data[i], componentsTable, !doubletsOnly, startIndex, columns);
                     startIndex += data[i].Sextets.Count + data[i].Doublets.Count;
+                    SpectrumFitProcessedHandler(data[i].FileName);
                 }
                 AddRemark();
                 _msWordDocument.SaveAs(Path.GetFullPath(destination));
@@ -264,6 +266,15 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
                 _remarkPresent = false;
             }
         }
+
+        protected virtual void SpectrumFitProcessedHandler(String processedFit)
+        {
+            EventHandler<ProcessedSpectrumFitEventArgs> handler = SpectrumFitProcessed;
+            if (handler != null)
+                handler(this, new ProcessedSpectrumFitEventArgs(processedFit));
+        }
+
+        public event EventHandler<ProcessedSpectrumFitEventArgs> SpectrumFitProcessed;
 
         private const Int32 LineWidthSextetIndex = 2;
         private const Int32 IsomerShiftSextetIndex = 3;
