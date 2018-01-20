@@ -36,7 +36,10 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             try
             {
                 foreach (SpectrumFit fit in data)
+                {
                     content.AddRange(GetExportingLines(fit));
+                    SpectrumFitProcessedHandler(fit.FileName);
+                }
             }
             catch (Exception e)
             {
@@ -58,6 +61,7 @@ namespace MossbauerLab.UnivemMsAggr.Core.Export
             try
             {
                 content.AddRange(GetExportingLines(data));
+                SpectrumFitProcessedHandler(data.FileName);
             }
             catch (Exception e)
             {
