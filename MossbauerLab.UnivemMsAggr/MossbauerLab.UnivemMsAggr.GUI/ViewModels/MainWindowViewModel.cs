@@ -156,8 +156,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             get { return _univemMsSpectraCompFiles; }
             set { _univemMsSpectraCompFiles = value; }
         }
-        
-        //public CompSelectionModel SelectedModel { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private static ObservableCollection<CompSelectionModel> _univemMsSpectraCompFiles  = new ObservableCollection<CompSelectionModel>();
