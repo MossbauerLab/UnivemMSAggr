@@ -12,3 +12,5 @@ It allows:
      - for S (relative area) is +-10%
 
 As a result this software saving me a lot of time on searching and copying every value with proper value error and rounding (especially when order must be ASC or DESC). I.e. working on two files with 10-12 components (magnetic sextets) could cost approximetely 3 or 4 hours.
+
+How to use: https://github.com/MossbauerLab/UnivemMSAggr/wiki/How-to-use
