@@ -58,6 +58,7 @@
     <Compile Include="Commands\MoveItemCommand.cs" />
     <Compile Include="Commands\RemoveCompCommand.cs" />
     <Compile Include="Commands\RunProcessingCommand.cs" />
+    <Compile Include="Commands\SelectOutputFileCommand.cs" />
     <Compile Include="GlobalDefs.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\IMediator.cs" />

@@ -71,6 +71,12 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             }
         }
 
+        private void SelectOutputAction(String output)
+        {
+            OutputFile = output;
+            OnPropertyChanged("OutputFile");
+        }
+
         private void RunAction()
         {
             ProgressValue = 0;
@@ -126,6 +132,11 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             get { return new RunProcessingCommand(RunAction); }
         }
 
+        public SelectOutputFileCommand OutputFileCommand
+        {
+            get { return new SelectOutputFileCommand(SelectOutputAction);}
+        }
+
         public String OutputFile { get; set; }
 
         public Decimal ProgressValue
@@ -145,8 +156,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.ViewModels
             get { return _univemMsSpectraCompFiles; }
             set { _univemMsSpectraCompFiles = value; }
         }
-        
-        //public CompSelectionModel SelectedModel { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private static ObservableCollection<CompSelectionModel> _univemMsSpectraCompFiles  = new ObservableCollection<CompSelectionModel>();
