@@ -133,6 +133,10 @@
       <Project>{d15859c0-9da6-4fa0-857f-f2242a080ad4}</Project>
       <Name>MossbauerLab.UnivemMsAggr.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MossbauerLab.UnivemMsAggr.GUI.Theme\MossbauerLab.UnivemMsAggr.GUI.Theme.csproj">
+      <Project>{bb415d28-1202-4220-bb96-f61c14455b7c}</Project>
+      <Name>MossbauerLab.UnivemMsAggr.GUI.Theme</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
