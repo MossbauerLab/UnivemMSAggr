@@ -25,8 +25,6 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Theme
         /// <param name="uri">The URI of the ResourceDictionary.</param>
         public Theme(string name, Uri uri)
         {
-            //Contract.Requires<ArgumentNullException>(name != null);
-
             Name = name;
             Uri = uri;
         }
@@ -39,8 +37,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Theme
         public bool Equals(Theme other)
         {
             if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return string.Equals(Name, other.Name);
+            return ReferenceEquals(this, other) || string.Equals(Name, other.Name);
         }
 
         /// <summary>
@@ -93,8 +90,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Theme
                 if (ReferenceEquals(x, y)) return true;
                 if (ReferenceEquals(x, null)) return false;
                 if (ReferenceEquals(y, null)) return false;
-                if (x.GetType() != y.GetType()) return false;
-                return string.Equals(x.Name, y.Name);
+                return x.GetType() == y.GetType() && string.Equals(x.Name, y.Name);
             }
 
             public int GetHashCode(Theme obj)

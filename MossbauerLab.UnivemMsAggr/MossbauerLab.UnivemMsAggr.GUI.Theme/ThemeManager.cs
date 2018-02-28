@@ -33,10 +33,7 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Theme
         {
             var localThemes = AvailableThemes ?? Enumerable.Empty<Theme>();
             if (localThemes.All(x => x != theme))
-            {
                 throw new ArgumentException("Unknown theme!");
-            }
-
             ApplyThemeImpl(Application.Current, Application.Current.Resources, theme);
         }
 
@@ -47,37 +44,23 @@ namespace MossbauerLab.UnivemMsAggr.GUI.Theme
         /// <param name="theme">The theme to be applied</param>
         public static void ApplyTheme(ContentControl control, Theme theme)
         {
-            //Contract.Requires<ArgumentNullException>(control != null);
-
             var localThemes = AvailableThemes ?? Enumerable.Empty<Theme>();
             if (localThemes.All(x => x != theme))
-            {
                 throw new ArgumentException("Unknown theme!");
-            }
-
             ApplyThemeImpl(control, control.Resources, theme);
         }
 
         private static void ApplyThemeImpl(DispatcherObject @object, ResourceDictionary resources, Theme theme)
         {
-            //Contract.Requires<ArgumentNullException>(resources != null);
-
             ResourceDictionary current;
             if (CurrentThemes.TryGetValue(@object, out current))
-            {
                 resources.MergedDictionaries.Remove(current);
 
-            }
-
-            if (theme != null && theme.Uri != null)
-            {
-                var resourceDictionary = Application.LoadComponent(theme.Uri) as ResourceDictionary;
-                if (resourceDictionary != null)
-                {
-                    resources.MergedDictionaries.Add(resourceDictionary);
-                    CurrentThemes[@object] = resourceDictionary;
-                }
-            }
+            if (theme == null || theme.Uri == null) return;
+            var resourceDictionary = Application.LoadComponent(theme.Uri) as ResourceDictionary;
+            if (resourceDictionary == null) return;
+            resources.MergedDictionaries.Add(resourceDictionary);
+            CurrentThemes[@object] = resourceDictionary;
         }
     }
 }
