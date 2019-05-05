@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels ="clr-namespace:MossbauerLab.UnivemMsAggr.GUI.ViewModels"
         xmlns:converters ="clr-namespace:MossbauerLab.UnivemMsAggr.GUI.Views.Converters"
-        Title="Add Univem MS components file" Height="140" Width="400"
+        Title="Add Univem MS components file" Height="150.194" Width="400"
         ResizeMode="NoResize"
         Topmost="True">
     <Window.Resources>
